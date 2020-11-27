@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" long="en">
+<head>
+    <meta charset="utf-8">
+    <title>忘记密码</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../styles/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../styles/css/public.css" media="all">
+    <link rel="stylesheet" href="../styles/js/lay-module/step-lay/step.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <div class="layui-fluid">
+            <div class="layui-card">
+                <div class="layui-card-body" style="padding-top: 40px;">
+                    <div class="layui-carousel" id="stepForm" lay-filter="stepForm" style="margin: 0 auto;">
+                        <div carousel-item>
+                            <div>
+                                <form class="layui-form" style="margin: 0 auto;max-width: 460px;padding-top: 40px;">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" th:text="#{forget.getback}"></label>
+                                        <div class="layui-input-block">
+                                            <select lay-verify="required">
+                                                <option value="1" disabled th:text="#{forget.phone}"></option>
+                                                <option value="2" selected th:text="#{forget.mailbox}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" th:text="#{forget.account}"></label>
+                                        <div class="layui-input-block">
+                                            <input type="text" th:placeholder="#{forget.fill}" class="layui-input"
+                                                   lay-verify="number" required="required" autocomplete="new-password"/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" th:text="#{forget.set}"></label>
+                                        <div class="layui-input-block">
+                                            <input type="password" th:placeholder="#{forget.set_one}" value=""
+                                                   class="layui-input" lay-verify="number" required="required"
+                                                   autocomplete="new-password"/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" th:text="#{forget.setAgain}"></label>
+                                        <div class="layui-input-block">
+                                            <input type="password" th:placeholder="#{forget.set_two}" value=""
+                                                   class="layui-input" lay-verify="number" required="required"
+                                                   autocomplete="new-password"/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" lay-submit lay-filter="formStep"
+                                                    th:text="#{forget.next}"></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div>
+                                <form class="layui-form" style="margin: 0 auto;max-width: 460px;padding-top: 40px;">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" th:text="#{forget.account}"></label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux">639537@qq.com</div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" th:text="#{forget.code}"></label>
+                                        <div class="layui-input-block">
+                                            <input type="text" th:placeholder="#{login.code}" class="layui-input"
+                                                   lay-verify="number" required="required" autocomplete="new-password"/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button type="button" class="layui-btn layui-btn-primary pre"
+                                                    th:text="#{forget.back}"></button>
+                                            <button type="button" class="layui-btn layui-btn-normal getCode"
+                                                    th:text="#{forget.getcode}"></button>
+                                            <button class="layui-btn" lay-submit lay-filter="formStep2"
+                                                    th:text="#{forget.confirm}"></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div>
+                                <div style="text-align: center;margin-top: 90px;">
+                                    <i class="layui-icon layui-circle"
+                                       style="color: white;font-size:30px;font-weight:bold;background: #52C41A;padding: 20px;line-height: 80px;">&#xe605;</i>
+                                    <div style="font-size: 24px;color: #333;font-weight: 500;margin-top: 30px;"
+                                         th:text="#{forget.success}"></div>
+                                    <div style="font-size: 14px;color: #666;margin-top: 20px;"
+                                         th:text="#{forget.msg}"></div>
+                                </div>
+                                <div style="text-align: center;margin-top: 50px;">
+                                    <button class="layui-btn layui-btn-primary next" th:text="#{forget.back}"></button>
+                                    <button class="layui-btn land" th:text="#{forget.land}"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="color: #666;margin-top: 30px;margin-bottom: 40px;padding-left: 30px;">
+                        <h3>说明</h3><br>
+                        <h4>入款到保险箱</h4>
+                        <p>如果需要，这里可以放一些关于产品的常见问题说明。</p>
+                        <br><h4>入款到现金</h4>
+                        <p>如果需要，这里可以放一些关于产品的常见问题说明。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="../styles/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../styles/js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'step'], function () {
+        var $ = layui.$,
+            form = layui.form,
+            step = layui.step;
+
+        step.render({
+            elem: '#stepForm',
+            filter: 'stepForm',
+            width: '100%', //设置容器宽度
+            stepWidth: '750px',
+            height: '500px',
+            stepItems: [{
+                title: '基础信息'
+            }, {
+                title: '获取验证码'
+            }, {
+                title: '完成'
+            }]
+        });
+
+
+        form.on('submit(formStep)', function (data) {
+            step.next('#stepForm');
+            return false;
+        });
+
+        form.on('submit(formStep2)', function (data) {
+            //分布表单下一步
+            step.next('#stepForm');
+            return false;
+        });
+
+        $('.pre').click(function () {
+            //分布表单上一步
+            step.pre('#stepForm');
+        });
+
+        //获取验证码
+        $('.getCode').on('click', function () {
+            //获取点击的对象
+            var obj = $(this);
+            //给对象添加禁止点击
+            obj.addClass("layui-disabled");
+            // obj.attr("disabled","disabled");
+            var time = 59;
+            //定义一个每秒执行一次的事件
+            var timer = setInterval(function () {
+                var temp = time--;
+                //更改按钮的值，但通过thyme
+                obj.attr("value", "(" + temp + ")后获取验证码");
+                //判断是否已经结束了禁止点击的时间
+                if (temp <= 0) {
+                    //移除禁止点击的效果
+                    obj.removeClass("layui-disabled");
+                    //改回按钮的值
+                    obj.attr("value", "获取验证码");
+                    //清除每秒执行的一次的事件
+                    clearInterval(timer);
+                    return;
+                }
+            }, 1000);
+            //发送异步请求，获取验证码
+            $.ajax({
+                type: "GET",
+                url: "getCode",
+                dataType: "json", //预期服务器返回数据的类型
+                success: function (data) {
+                    if (data.success) {
+                        $("searchResult").html(data.msg);
+                    } else {
+                        $("#searchResult").html("出现错误：" + data.msg);
+                    }
+                },
+                error: function (msg) {
+                    alert("发生错误：" + msg.status);
+                }
+            })
+        })
+
+        $('.next').click(function () {
+            step.pre('#stepForm');
+        });
+
+        //前往登录
+        $('.land').click(function () {
+            window.location = 'login';
+        });
+    })
+</script>
+</body>
+</html>
