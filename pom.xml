@@ -31,6 +31,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+        <!--发送邮件的jar包-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <!--<dependency >-->
+        <!--<groupId >com.sun.mail </groupId >-->
+        <!--<artifactId >javax.mail </artifactId >-->
+        <!--<version >1.5.4 </version >-->
+        <!--</dependency >-->
     </dependencies>
 
     <build>

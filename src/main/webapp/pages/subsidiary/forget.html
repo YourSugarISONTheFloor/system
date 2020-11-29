@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" long="en">
-<head>
+<head th:fragment="head">
     <meta charset="utf-8">
-    <title>忘记密码</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="../styles/lib/layui-v2.5.5/css/layui.css" media="all">
-    <link rel="stylesheet" href="../styles/css/public.css" media="all">
-    <link rel="stylesheet" href="../styles/js/lay-module/step-lay/step.css" media="all">
+    <link rel="stylesheet" th:href="@{/styles/lib/layui-v2.5.5/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/styles/css/public.css}" media="all">
+    <link rel="stylesheet" th:href="@{/styles/js/lay-module/step-lay/step.css}" media="all">
 </head>
+<title>忘记密码</title>
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
@@ -24,48 +24,54 @@
                                         <label class="layui-form-label" th:text="#{forget.getback}"></label>
                                         <div class="layui-input-block">
                                             <select lay-verify="required">
-                                                <option value="1" disabled th:text="#{forget.phone}"></option>
-                                                <option value="2" selected th:text="#{forget.mailbox}"></option>
+                                                <option value="1" selected th:text="#{forget.phone}"></option>
+                                                <option value="2" th:text="#{forget.mailbox}"></option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="layui-form-item">
-                                        <label class="layui-form-label" th:text="#{forget.account}"></label>
-                                        <div class="layui-input-block">
-                                            <input type="text" th:placeholder="#{forget.fill}" class="layui-input"
-                                                   lay-verify="number" required="required" autocomplete="new-password"/>
+                                    <div th:fragment="first">
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label" th:text="#{forget.account}"></label>
+                                            <div class="layui-input-block">
+                                                <input type="text" th:placeholder="#{forget.fill}"
+                                                       class="layui-input account" lay-verify="phone"
+                                                       required="required"
+                                                       autocomplete="new-password"/>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="layui-form-item">
-                                        <label class="layui-form-label" th:text="#{forget.set}"></label>
-                                        <div class="layui-input-block">
-                                            <input type="password" th:placeholder="#{forget.set_one}" value=""
-                                                   class="layui-input" lay-verify="number" required="required"
-                                                   autocomplete="new-password"/>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label" th:text="#{forget.set}"></label>
+                                            <div class="layui-input-block">
+                                                <input type="password" th:placeholder="#{forget.set_one}"
+                                                       class="layui-input password_1" lay-verify="pass"
+                                                       required="required"
+                                                       autocomplete="new-password"/>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="layui-form-item">
-                                        <label class="layui-form-label" th:text="#{forget.setAgain}"></label>
-                                        <div class="layui-input-block">
-                                            <input type="password" th:placeholder="#{forget.set_two}" value=""
-                                                   class="layui-input" lay-verify="number" required="required"
-                                                   autocomplete="new-password"/>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label" th:text="#{forget.setAgain}"></label>
+                                            <div class="layui-input-block">
+                                                <input type="password" th:placeholder="#{forget.set_two}"
+                                                       class="layui-input password_2" lay-verify="pass"
+                                                       required="required"
+                                                       autocomplete="new-password"/>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="layui-form-item">
-                                        <div class="layui-input-block">
-                                            <button class="layui-btn" lay-submit lay-filter="formStep"
-                                                    th:text="#{forget.next}"></button>
+                                        <div class="layui-form-item">
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn" lay-submit lay-filter="formStep"
+                                                        th:text="#{forget.next}"></button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
                             </div>
-                            <div>
+                            <div th:fragment="scend">
                                 <form class="layui-form" style="margin: 0 auto;max-width: 460px;padding-top: 40px;">
                                     <div class="layui-form-item">
                                         <label class="layui-form-label" th:text="#{forget.account}"></label>
                                         <div class="layui-input-block">
-                                            <div class="layui-form-mid layui-word-aux">639537@qq.com</div>
+                                            <div class="layui-form-mid layui-word-aux account_two"></div>
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
@@ -104,26 +110,46 @@
                         </div>
                     </div>
                     <hr>
-                    <div style="color: #666;margin-top: 30px;margin-bottom: 40px;padding-left: 30px;">
-                        <h3>说明</h3><br>
-                        <h4>入款到保险箱</h4>
-                        <p>如果需要，这里可以放一些关于产品的常见问题说明。</p>
-                        <br><h4>入款到现金</h4>
-                        <p>如果需要，这里可以放一些关于产品的常见问题说明。</p>
+                    <div style="color: #666;margin-top: 30px;margin-bottom: 40px;padding-left: 30px;"
+                         th:fragment="information">
+                        <h3>[[#{forget.explain}]]</h3><br>
+                        <h4>[[#{forget.information}]]</h4>
+                        <p>[[#{forget.information_one}]]</p>
+                        <br><h4>[[#{forget.getcode}]]</h4>
+                        <p>[[#{forget.information_two}]]</p>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
-<script src="../styles/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
-<script src="../styles/js/lay-config.js?v=1.0.4" charset="utf-8"></script>
-<script>
+<div th:fragment="js">
+    <script th:src="@{/styles/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
+    <script th:src="@{/styles/js/lay-config.js?v=1.0.4}" charset="utf-8"></script>
+    <script type="text/javascript">
+        //<![CDATA[
     layui.use(['form', 'step'], function () {
-        var $ = layui.$,
-            form = layui.form,
-            step = layui.step;
+        var $ = layui.$;
+        var form = layui.form;
+        var step = layui.step;
+        var btn_getCode = false;
+        var account = $("select option:selected").val();
+        var verify;
+
+        form.verify({
+            pass: [/^(?=.*[a-zA-Z])(?=.*\d)[^]{6,}$/, '[[#{forget.msgPasswordRules}]]']
+        })
+
+        //下拉列表的选中事件
+        $(".layui-anim-upbit dd").on('click', function () {
+            account = $(this).attr("lay-value");
+            if (account == 1) {
+                verify = "phone";
+            } else {
+                verify = "email";
+            }
+            $('.account').attr("lay-verify", verify);
+        });
 
         step.render({
             elem: '#stepForm',
@@ -132,21 +158,27 @@
             stepWidth: '750px',
             height: '500px',
             stepItems: [{
-                title: '基础信息'
+                title: '[[#{forget.step_one}]]'
             }, {
-                title: '获取验证码'
+                title: '[[#{forget.getcode}]]'
             }, {
-                title: '完成'
+                title: '[[#{forget.step_two}]]'
             }]
         });
 
-
         form.on('submit(formStep)', function (data) {
-            step.next('#stepForm');
+            if ($('.password_1').val() == $('.password_2').val()) {
+                //赋值给获取验证码的账号
+                $('.account_two').text($('.account').val());
+                step.next('#stepForm');
+            } else {
+                layer.msg("[[#{forget.msg_pass}]]");
+            }
             return false;
         });
 
         form.on('submit(formStep2)', function (data) {
+            layer.msg("[[#{forget.codeMsg}]]")
             //分布表单下一步
             step.next('#stepForm');
             return false;
@@ -157,35 +189,60 @@
             step.pre('#stepForm');
         });
 
-        //获取验证码
+        //获取验证码，一分钟内只能点击一次
         $('.getCode').on('click', function () {
+            if (!btn_getCode) {
+                btn_getCode = true;
+                getcode($(this));
+                ajax($('.account_two').text());
+            } else {
+                return false;
+            }
+        })
+
+        $('.next').click(function () {
+            step.pre('#stepForm');
+        });
+
+        //前往登录
+        $('.land').click(function () {
+            window.location = 'login';
+        });
+
+        //点击事件
+        var getcode = function (date) {
             //获取点击的对象
-            var obj = $(this);
+            var obj = date;
+            //获取按钮的文本
+            var text = obj.text();
             //给对象添加禁止点击
             obj.addClass("layui-disabled");
-            // obj.attr("disabled","disabled");
             var time = 59;
             //定义一个每秒执行一次的事件
             var timer = setInterval(function () {
                 var temp = time--;
-                //更改按钮的值，但通过thyme
-                obj.attr("value", "(" + temp + ")后获取验证码");
+                //更改按钮的值
+                obj.text(text + ' (' + temp + "S)");
                 //判断是否已经结束了禁止点击的时间
                 if (temp <= 0) {
+                    btn_getCode = false;
                     //移除禁止点击的效果
                     obj.removeClass("layui-disabled");
                     //改回按钮的值
-                    obj.attr("value", "获取验证码");
+                    obj.text(text);
                     //清除每秒执行的一次的事件
                     clearInterval(timer);
                     return;
                 }
             }, 1000);
-            //发送异步请求，获取验证码
+        }
+        //发送异步请求，获取验证码
+        var ajax = function (user) {
             $.ajax({
                 type: "GET",
                 url: "getCode",
                 dataType: "json", //预期服务器返回数据的类型
+                data: {user: user},
                 success: function (data) {
                     if (data.success) {
                         $("searchResult").html(data.msg);
@@ -197,17 +254,10 @@
                     alert("发生错误：" + msg.status);
                 }
             })
-        })
-
-        $('.next').click(function () {
-            step.pre('#stepForm');
-        });
-
-        //前往登录
-        $('.land').click(function () {
-            window.location = 'login';
-        });
+        }
     })
+        // ]]>
 </script>
+</div>
 </body>
 </html>
