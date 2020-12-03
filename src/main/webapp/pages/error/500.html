@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" long="en">
 <head>
     <meta charset="UTF-8">
-    <title>404</title>
+    <title>500</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -52,7 +52,7 @@
             border-bottom: 15px solid transparent;
         }
 
-        .error .container-error-404 {
+        .error .container-error-500 {
             top: 50%;
             margin-top: 250px;
             position: relative;
@@ -60,7 +60,7 @@
             padding-top: 40px;
         }
 
-        .error .container-error-404 .clip {
+        .error .container-error-500 .clip {
             display: inline-block;
             transform: skew(-45deg);
         }
@@ -185,7 +185,7 @@
                 border-bottom: 8px solid transparent;
             }
 
-            .error .container-error-404 {
+            .error .container-error-500 {
                 height: 150px;
             }
         }
@@ -195,7 +195,7 @@
 <div class="error">
     <div class="container-floud">
         <div style="text-align: center">
-            <div class="container-error-404">
+            <div class="container-error-500">
                 <div class="clip">
                     <div class="shadow">
                         <span class="digit thirdDigit"></span>
@@ -211,16 +211,17 @@
                         <span class="digit firstDigit"></span>
                     </div>
                 </div>
-                <div class="msg">OH!
+                <div class="msg">NO!
                     <span class="triangle"></span>
                 </div>
             </div>
-            <h2 class="h1">[[#{error.404}]]</h2>
+            <h2 class="h1">[[#{error.500}]]</h2>
         </div>
     </div>
 </div>
 <script th:src="@{/styles/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
-<script>
+<script type="text/javascript">
+    //获取0到9的随机数
     function randomNum() {
         return Math.floor(Math.random() * 9) + 1;
     }
@@ -229,7 +230,7 @@
     loop3 = setInterval(function () {
         if (i > 40) {
             clearInterval(loop3);
-            document.querySelector('.thirdDigit').textContent = 4;
+            document.querySelector('.thirdDigit').textContent = 5;
         } else {
             document.querySelector('.thirdDigit').textContent = randomNum();
             i++;
@@ -247,7 +248,7 @@
     loop1 = setInterval(function () {
         if (i > 100) {
             clearInterval(loop1);
-            document.querySelector('.firstDigit').textContent = 4;
+            document.querySelector('.firstDigit').textContent = 0;
         } else {
             document.querySelector('.firstDigit').textContent = randomNum();
             i++;

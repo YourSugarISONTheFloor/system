@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>后台管理-登陆</title>
@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" href="/styles/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" th:href="@{/styles/lib/layui-v2.5.5/css/layui.css}" media="all">
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -40,30 +40,30 @@
         }
 
         .login-main .login-bottom .center .item .icon-1 {
-            background: url(/styles/images/icon-login.png) no-repeat 1px 0;
+            background: url(styles/images/icon-login.png) no-repeat 1px 0;
         }
 
         .login-main .login-bottom .center .item .icon-2 {
-            background: url(/styles/images/icon-login.png) no-repeat -54px 0;
+            background: url(styles/images/icon-login.png) no-repeat -54px 0;
         }
 
         .login-main .login-bottom .center .item .icon-3 {
-            background: url(/styles/images/icon-login.png) no-repeat -106px 0;
+            background: url(styles/images/icon-login.png) no-repeat -106px 0;
         }
 
         .login-main .login-bottom .center .item .icon-4 {
-            background: url(/styles/images/icon-login.png) no-repeat 0 -43px;
+            background: url(styles/images/icon-login.png) no-repeat 0 -43px;
             position: absolute;
             right: -10px;
             cursor: pointer;
         }
 
         .login-main .login-bottom .center .item .icon-5 {
-            background: url(/styles/images/icon-login.png) no-repeat -55px -43px;
+            background: url(styles/images/icon-login.png) no-repeat -55px -43px;
         }
 
         .login-main .login-bottom .center .item .icon-6 {
-            background: url(/styles/images/icon-login.png) no-repeat 0 -93px;
+            background: url(styles/images/icon-login.png) no-repeat 0 -93px;
             position: absolute;
             right: -10px;
             margin-top: 8px;
@@ -177,7 +177,7 @@
         }
 
         body {
-            background: url(/styles/images/loginbg.png) 0% 0% / cover no-repeat;
+            background: url(styles/images/loginbg.png) 0% 0% / cover no-repeat;
             position: static;
             font-size: 12px;
         }
@@ -230,9 +230,17 @@
             color: #1391ff;
             text-decoration: none;
             position: absolute;
-            right: 62px;
+            right: 122px;
         }
 
+        .login-main .login-bottom .tip .registered {
+            font-stretch: normal;
+            letter-spacing: 0;
+            color: #1391ff;
+            text-decoration: none;
+            position: absolute;
+            right: 62px;
+        }
         .login-main .login-bottom .login-btn {
             width: 288px;
             height: 40px;
@@ -304,18 +312,20 @@
             <div class="center">
                 <div class="item">
                     <span class="icon icon-2"></span>
-                    <input type="text" name="username" lay-verify="required" th:placeholder="#{login.username}" maxlength="24"/>
+                    <input type="text" name="username" lay-verify="required" th:placeholder="#{login.username}"
+                           maxlength="24"/>
                 </div>
 
                 <div class="item">
                     <span class="icon icon-3"></span>
-                    <input type="password" name="password" lay-verify="required" th:placeholder="#{login.password}"  maxlength="20">
+                    <input type="password" name="password" lay-verify="required" th:placeholder="#{login.password}"
+                           maxlength="20">
                     <span class="bind-password icon icon-4"></span>
                 </div>
 
                 <div id="validatePanel" class="item" style="width: 137px;">
                     <input type="text" name="captcha" th:placeholder="#{login.code}" maxlength="4">
-                    <img id="refreshCaptcha" class="validateImg" src="/styles/images/captcha.jpg">
+                    <img id="refreshCaptcha" class="validateImg" src="/codeImage" title="看不清，换一张">
                 </div>
 
             </div>
@@ -323,6 +333,7 @@
                 <span class="icon-nocheck"></span>
                 <span class="login-tip" th:text="#{login.stay}"></span>
                 <a href="javascript:" class="forget-password" th:text="#{login.forget}"></a>
+                <a href="javascript:" class="registered" th:text="#{login.registered}"></a>
             </div>
             <div class="layui-form-item" style="text-align:center; width:100%;height:100%;margin:0px;">
                 <button class="login-btn" lay-submit="" lay-filter="login" th:text="#{login.now}"></button>
@@ -331,10 +342,11 @@
     </div>
 </div>
 <div class="footer">
-    [[#{login.footer}]]<span class="padding-5">|</span><a target="_blank"  href="http://www.miitbeian.gov.cn">[[#{login.number}]]</a>
+    [[#{login.footer}]]<span class="padding-5">|</span><a target="_blank" href="http://www.miitbeian.gov.cn">[[#{login.number}]]</a>
 </div>
-<script src="/styles/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
-<script>
+<script th:src="@{/styles/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
+<script type="text/javascript">
+    //<![CDATA[
     layui.use(['form', 'jquery'], function () {
         var $ = layui.jquery,
             form = layui.form,
@@ -352,7 +364,7 @@
                 $("input[name='password']").attr('type', 'text');
             }
         });
-
+        //查看密码
         $('.icon-nocheck').on('click', function () {
             if ($(this).hasClass('icon-check')) {
                 $(this).removeClass('icon-check');
@@ -360,28 +372,40 @@
                 $(this).addClass('icon-check');
             }
         });
-
+        //看不清，换一张
+        $('#refreshCaptcha').on('click', function () {
+            $("this").attr("src", "/codeImage?time=" + new Date().getMilliseconds());
+        })
+        //忘记密码
+        $('.forget-password').on('click', function () {
+            window.location = 'forgetPassword';
+        });
+        //立即注册
+        $('.registered').on('click', function () {
+            window.location = "/registered";
+        })
         // 进行登录操作
         form.on('submit(login)', function (data) {
             data = data.field;
             if (data.username == '') {
-                layer.msg('用户名不能为空');
+                layer.msg('[[#{login.usernameNull}]]');
                 return false;
             }
             if (data.password == '') {
-                layer.msg('密码不能为空');
+                layer.msg('[[#{login.passwordNull}]]');
                 return false;
             }
             if (data.captcha == '') {
-                layer.msg('验证码不能为空');
+                layer.msg('[[#{login.codeNull}]]');
                 return false;
             }
             layer.msg('登录成功', function () {
-                window.location = '/';
+                window.href = '';
             });
             return false;
         });
     });
+    // ]]>
 </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="utf-8">
     <title>人事后台管理系统</title>
@@ -12,11 +12,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <link rel="icon" href="styles/images/favicon.ico">
-    <link rel="stylesheet" href="styles/lib/layui-v2.5.5/css/layui.css" media="all">
-    <link rel="stylesheet" href="styles/css/layuimini.css?v=2.0.4.2" media="all">
-    <link rel="stylesheet" href="styles/css/themes/default.css" media="all">
-    <link rel="stylesheet" href="styles/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <link rel="icon" th:href="@{/styles/images/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/styles/lib/layui-v2.5.5/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/styles/css/layuimini.css?v=2.0.4.2}" media="all">
+    <link rel="stylesheet" th:href="@{/styles/css/themes/default.css}" media="all">
+    <link rel="stylesheet" th:href="@{/styles/lib/font-awesome-4.7.0/css/font-awesome.min.css}" media="all">
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -58,6 +58,17 @@
                 </li>
                 <li class="layui-nav-item mobile layui-hide-xs" lay-unselect>
                     <a href="javascript:;" data-check-screen="full"><i class="fa fa-arrows-alt"></i></a>
+                </li>
+                <li class="layui-nav-item layuimini-setting">
+                    <a href="javascript:;">语言</a>
+                    <dl class="layui-nav-child">
+                        <dd class="layui-this">
+                            <a href="javascript:;">中文</a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;">英文</a>
+                        </dd>
+                    </dl>
                 </li>
                 <li class="layui-nav-item layuimini-setting">
                     <a href="javascript:;">admin</a>
@@ -129,8 +140,8 @@
 
     </div>
 </div>
-<script src="styles/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
-<script src="styles/js/lay-config.js?v=2.0.0" charset="utf-8"></script>
+<script th:src="@{/styles/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
+<script th:src="@{/styles/js/lay-config.js?v=2.0.0}" charset="utf-8"></script>
 <script>
     layui.use(['jquery', 'layer', 'miniAdmin', 'miniTongji'], function () {
         var $ = layui.jquery,
@@ -139,7 +150,7 @@
             miniTongji = layui.miniTongji;
 
         var options = {
-            iniUrl: "/styles/api/init.json",    // 初始化接口
+            iniUrl: "styles/api/init.json",    // 初始化接口
             clearUrl: "styles/api/clear.json", // 缓存清理接口
             urlHashLocation: true,      // 是否打开hash定位
             bgColorDefault: false,      // 主题默认配置
@@ -151,19 +162,19 @@
         };
         miniAdmin.render(options);
 
-        // 百度统计代码，只统计指定域名
-        miniTongji.render({
-            specific: true,
-            domains: [
-                '99php.cn',
-                'layuimini.99php.cn',
-                'layuimini-onepage.99php.cn',
-            ],
-        });
+        // // 百度统计代码，只统计指定域名
+        // miniTongji.render({
+        //     specific: true,
+        //     domains: [
+        //         '99php.cn',
+        //         'layuimini.99php.cn',
+        //         'layuimini-onepage.99php.cn',
+        //     ],
+        // });
 
         $('.login-out').on("click", function () {
             layer.msg('退出登录成功', function () {
-                window.location = 'login';
+                window.location.href = 'login';
             });
         });
     });
