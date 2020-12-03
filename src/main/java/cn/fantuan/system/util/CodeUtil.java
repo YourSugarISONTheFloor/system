@@ -1,4 +1,4 @@
-package cn.fantuan.system.uitil;
+package cn.fantuan.system.util;
 
 import java.util.Random;
 import java.util.UUID;

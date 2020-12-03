@@ -13,18 +13,77 @@
                             <div>
                                 <form class="layui-form" style="margin: 0 auto;max-width: 460px;padding-top: 40px;">
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label" th:text="#{forget.register}"></label>
+                                        <label class="layui-form-label" th:text="#{forget.regMath}"></label>
                                         <div class="layui-input-block">
                                             <select lay-verify="required">
-                                                <option value="1" selected th:text="#{forget.phone}"></option>
-                                                <option value="2" th:text="#{forget.mailbox}"></option>
+                                                <option value="1" disabled th:text="#{forget.phone}"></option>
+                                                <option value="2" selected th:text="#{forget.mailbox}"></option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div th:replace="subsidiary/forget :: first"></div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" th:text="#{forget.account}"></label>
+                                        <div class="layui-input-block">
+                                            <input type="text" th:placeholder="#{forget.fill}"
+                                                   class="layui-input account" lay-verify="phone"
+                                                   required="required"
+                                                   autocomplete="new-password"/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" th:text="#{forget.set}"></label>
+                                        <div class="layui-input-block">
+                                            <input type="password" th:placeholder="#{forget.setPassword}"
+                                                   class="layui-input password_1" lay-verify="pass"
+                                                   required="required"
+                                                   autocomplete="new-password"/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" th:text="#{forget.setAgain}"></label>
+                                        <div class="layui-input-block">
+                                            <input type="password" th:placeholder="#{forget.set_two}"
+                                                   class="layui-input password_2" lay-verify="pass"
+                                                   required="required"
+                                                   autocomplete="new-password"/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" lay-submit lay-filter="formStep"
+                                                    th:text="#{forget.next}"></button>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
-                            <div th:include="subsidiary/forget :: scend"></div>
+                            <div>
+                                <form class="layui-form" style="margin: 0 auto;max-width: 460px;padding-top: 40px;">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" th:text="#{forget.account}"></label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux account_two"></div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label" th:text="#{forget.code}"></label>
+                                        <div class="layui-input-block">
+                                            <input type="text" th:placeholder="#{login.code}" class="layui-input"
+                                                   lay-verify="number" required="required" autocomplete="new-password"/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button type="button" class="layui-btn layui-btn-primary pre"
+                                                    th:text="#{forget.back}"></button>
+                                            <button type="button" class="layui-btn layui-btn-normal getCode"
+                                                    th:text="#{forget.getcode}"></button>
+                                            <button class="layui-btn" lay-submit lay-filter="formStep2"
+                                                    th:text="#{login.registered}"></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                             <div>
                                 <div style="text-align: center;margin-top: 90px;">
                                     <i class="layui-icon layui-circle"

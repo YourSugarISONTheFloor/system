@@ -10,6 +10,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" th:href="@{/styles/lib/layui-v2.5.5/css/layui.css}" media="all">
+    <!--导入自定义的一些公共方法-->
+    <script th:src="@{/styles/js/my_function.js}"></script>
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -230,7 +232,10 @@
             color: #1391ff;
             text-decoration: none;
             position: absolute;
-            right: 122px;
+            right: 110px;
+        }
+        .login-main .login-bottom .tip .forget-password:hover {
+            color: red;
         }
 
         .login-main .login-bottom .tip .registered {
@@ -241,6 +246,10 @@
             position: absolute;
             right: 62px;
         }
+        .login-main .login-bottom .tip .registered:hover {
+            color: red;
+        }
+
         .login-main .login-bottom .login-btn {
             width: 288px;
             height: 40px;
@@ -324,7 +333,7 @@
                 </div>
 
                 <div id="validatePanel" class="item" style="width: 137px;">
-                    <input type="text" name="captcha" th:placeholder="#{login.code}" maxlength="4">
+                    <input type="text" name="clod" th:placeholder="#{login.code}" maxlength="4">
                     <img id="refreshCaptcha" class="validateImg" src="/codeImage" title="看不清，换一张">
                 </div>
 
@@ -352,6 +361,12 @@
             form = layui.form,
             layer = layui.layer;
 
+        //获取页面中的错误信息
+        var msg="[[${msg}]]"
+        if(msg!=""){
+            layer.msg(msg);
+        }
+
         // 登录过期的时候，跳出ifram框架
         if (top.location != self.location) top.location = self.location;
 
@@ -374,19 +389,27 @@
         });
         //看不清，换一张
         $('#refreshCaptcha').on('click', function () {
-            $("this").attr("src", "/codeImage?time=" + new Date().getMilliseconds());
+            this.src = this.src + '?time=' + (new Date).getTime();
         })
+
         //忘记密码
         $('.forget-password').on('click', function () {
-            window.location = 'forgetPassword';
+            MyMethod.language('/forgetPassword');
         });
+
         //立即注册
         $('.registered').on('click', function () {
-            window.location = "/registered";
-        })
+            MyMethod.language('/registered');
+        });
+        if(sessionStorage.getItem("user")!=""){
+            $("input[name='username']").val(sessionStorage.getItem("user"));
+            $("input[name='password']").val(sessionStorage.getItem("word"));
+        }
         // 进行登录操作
         form.on('submit(login)', function (data) {
             data = data.field;
+            sessionStorage.setItem("user",data.username);
+            sessionStorage.setItem("word",data.password);
             if (data.username == '') {
                 layer.msg('[[#{login.usernameNull}]]');
                 return false;
@@ -395,14 +418,31 @@
                 layer.msg('[[#{login.passwordNull}]]');
                 return false;
             }
-            if (data.captcha == '') {
+            if (data.clod == '') {
                 layer.msg('[[#{login.codeNull}]]');
                 return false;
             }
-            layer.msg('登录成功', function () {
-                window.href = '';
-            });
+            $.ajax({
+                type:"get",
+                url:"/logging",
+                async: false,
+                data:data,
+                success: function(rest){
+                    if(rest.code==1){
+                        MyMethod.language('/');
+                    }else if(rest.code==2){
+                        layer.msg(rest.message)
+                    }else{
+                        layer.msg(rest.message);
+                    }
+                    return false;
+                },
+                error:function (rest) {
+                    layer.msg(rest);
+                }
+            })
             return false;
+
         });
     });
     // ]]>

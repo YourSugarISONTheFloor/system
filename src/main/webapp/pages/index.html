@@ -17,6 +17,7 @@
     <link rel="stylesheet" th:href="@{/styles/css/layuimini.css?v=2.0.4.2}" media="all">
     <link rel="stylesheet" th:href="@{/styles/css/themes/default.css}" media="all">
     <link rel="stylesheet" th:href="@{/styles/lib/font-awesome-4.7.0/css/font-awesome.min.css}" media="all">
+    <script th:src="@{/styles/js/my_function.js}"></script>
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -61,8 +62,8 @@
                 </li>
                 <li class="layui-nav-item layuimini-setting">
                     <a href="javascript:;">语言</a>
-                    <dl class="layui-nav-child">
-                        <dd class="layui-this">
+                    <dl class="layui-nav-child language">
+                        <dd>
                             <a href="javascript:;">中文</a>
                         </dd>
                         <dd>
@@ -71,7 +72,7 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item layuimini-setting">
-                    <a href="javascript:;">admin</a>
+                    <a href="javascript:;">[[${session.user}]]</a>
                     <dl class="layui-nav-child">
                         <dd>
                             <a href="javascript:;" layuimini-content-href="page/user-setting.html" data-title="基本资料"
@@ -162,19 +163,29 @@
         };
         miniAdmin.render(options);
 
-        // // 百度统计代码，只统计指定域名
-        // miniTongji.render({
-        //     specific: true,
-        //     domains: [
-        //         '99php.cn',
-        //         'layuimini.99php.cn',
-        //         'layuimini-onepage.99php.cn',
-        //     ],
-        // });
+        // 百度统计代码，只统计指定域名
+        miniTongji.render({
+            specific: true,
+            domains: [
+                '99php.cn',
+                'layuimini.99php.cn',
+                'layuimini-onepage.99php.cn',
+            ],
+        });
 
+        //语言切换事件
+        $('.language dd').on('click',function () {
+            if($(this).children().text()==="中文"){
+                sessionStorage.setItem("language","zh_CN");
+                location.reload(true);
+            }else{
+                sessionStorage.setItem("language","en_US");
+                MyMethod.language('/login')
+            }
+        })
         $('.login-out').on("click", function () {
             layer.msg('退出登录成功', function () {
-                window.location.href = 'login';
+               MyMethod.language('/login')
             });
         });
     });
