@@ -1,4 +1,4 @@
-package cn.fantuan.system.uitil;
+package cn.fantuan.system.util;
 
 import org.springframework.stereotype.Service;
 

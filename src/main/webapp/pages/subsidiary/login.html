@@ -425,10 +425,15 @@
             $.ajax({
                 type:"get",
                 url:"/logging",
+                async: false,
                 data:data,
                 success: function(rest){
-                    if(rest.sign=1){
-                        MyMethod.language('/')
+                    if(rest.code==1){
+                        MyMethod.language('/');
+                    }else if(rest.code==2){
+                        layer.msg(rest.message)
+                    }else{
+                        layer.msg(rest.message);
                     }
                     return false;
                 },
@@ -436,6 +441,7 @@
                     layer.msg(rest);
                 }
             })
+            return false;
 
         });
     });

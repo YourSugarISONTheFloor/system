@@ -7,25 +7,29 @@ import cn.fantuan.system.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
+
 @Service
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private LoginDao loginDao;
-
-    private User user;
+    @Autowired
+    HttpSession session;
 
     @Override
     public Object getUser(String username, String password) {
-        user = loginDao.getUser(username);
+        User user = loginDao.getUser(username);
+        System.out.println(user);
         if (user != null) {
-            if (user.getPassword() == password) {
+            if (user.getPassword().equals(password)) {
+                session.setAttribute("user",user.getName());
                 return new CommonResult(1, "可以登录", user);
             } else {
-                return new CommonResult(1, "密码错误", null);
+                return new CommonResult(2, "密码错误", null);
             }
         } else {
-            return new CommonResult(1, "该用户走丢啦", null);
+            return new CommonResult(0, "该用户走丢啦", null);
         }
     }
 }

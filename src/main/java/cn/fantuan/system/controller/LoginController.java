@@ -1,8 +1,8 @@
 package cn.fantuan.system.controller;
 
 import cn.fantuan.system.service.LoginService;
-import cn.fantuan.system.servlet.SendEmailServlet;
-import cn.fantuan.system.uitil.CodeImg;
+import cn.fantuan.system.util.SendEmailServlet;
+import cn.fantuan.system.util.CodeImg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
