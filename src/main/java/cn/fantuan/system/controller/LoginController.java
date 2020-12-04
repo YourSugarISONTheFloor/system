@@ -1,10 +1,12 @@
 package cn.fantuan.system.controller;
 
+import cn.fantuan.system.service.LoginService;
 import cn.fantuan.system.servlet.SendEmailServlet;
 import cn.fantuan.system.uitil.CodeImg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -13,6 +15,8 @@ import java.io.IOException;
 @Controller
 public class LoginController {
     private static final String PATH = "/subsidiary/";
+    @Autowired
+    LoginService loginService;
     //发送邮箱的处理器
     @Autowired
     SendEmailServlet sendEmailServlet;
@@ -45,5 +49,12 @@ public class LoginController {
     public Integer getCode(String user) {
         sendEmailServlet.sendEmail(user);
         return 0;
+    }
+
+    //根据用户输入的用户名或密码进行查询
+    @GetMapping("/logging")
+    @ResponseBody
+    public Object log(String username, String password) {
+        return loginService.getUser(username,password);
     }
 }

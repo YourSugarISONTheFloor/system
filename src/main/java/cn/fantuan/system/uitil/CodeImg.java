@@ -54,8 +54,6 @@ public class CodeImg {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         //将图片写入输出流
         ImageIO.write(image, "jpg", os);
-        String checkCode_session = sb.toString();
-        System.out.println(checkCode_session);
         //返回结果
         return os.toByteArray();
     }

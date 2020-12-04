@@ -1,14 +1,14 @@
-package cn.fantuan.system.server.impl;
+package cn.fantuan.system.service.impl;
 
 import cn.fantuan.system.dao.LoginDao;
 import cn.fantuan.system.entities.CommonResult;
 import cn.fantuan.system.entities.User;
-import cn.fantuan.system.server.LoginServer;
+import cn.fantuan.system.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LoginServerImpl implements LoginServer {
+public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private LoginDao loginDao;
