@@ -1,8 +1,11 @@
 package cn.fantuan.system.util;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -11,6 +14,8 @@ import java.util.Random;
 
 @Service
 public class CodeImg {
+    @Autowired
+    HttpSession session;
     public byte[] getCodeImg() throws IOException {
         int width = 100;
         int height = 38;
@@ -24,7 +29,7 @@ public class CodeImg {
         g.setColor(Color.YELLOW);
         g.drawRect(0, 0, width - 1, height - 1);
         // 写验证码
-        String str = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghjklmnopqrstuvwxyz023456789";
+        String str = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjklmnpqrstuvwxyz23456789";
         // 生成一个随机角标
         Random ran = new Random();
         StringBuilder sb = new StringBuilder();
@@ -50,6 +55,7 @@ public class CodeImg {
 //            int y2 = ran.nextInt(height);
 //            g.drawLine(x1, y1, x2, y2);
 //        }
+        session.setAttribute("session_validatecode",sb.toString());
         //定义一个二进制数组输出流
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         //将图片写入输出流

@@ -72,7 +72,7 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item layuimini-setting">
-                    <a href="javascript:;">[[${session.user}]]</a>
+                    <a href="javascript:;">[[${session.session_user}]]</a>
                     <dl class="layui-nav-child">
                         <dd>
                             <a href="javascript:;" layuimini-content-href="page/user-setting.html" data-title="基本资料"
@@ -174,18 +174,18 @@
         });
 
         //语言切换事件
-        $('.language dd').on('click',function () {
-            if($(this).children().text()==="中文"){
-                sessionStorage.setItem("language","zh_CN");
+        $('.language dd').on('click', function () {
+            if ($(this).children().text() === "中文") {
+                sessionStorage.setItem("language", "zh_CN");
                 location.reload(true);
-            }else{
-                sessionStorage.setItem("language","en_US");
+            } else {
+                sessionStorage.setItem("language", "en_US");
                 MyMethod.language('/login')
             }
         })
         $('.login-out').on("click", function () {
             layer.msg('退出登录成功', function () {
-               MyMethod.language('/login')
+                MyMethod.language('/logout')
             });
         });
     });

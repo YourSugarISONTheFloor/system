@@ -9,4 +9,6 @@ import org.springframework.stereotype.Component;
 @Mapper
 public interface LoginDao {
     User getUser(@Param("username") String username);
+
+    Integer updatePassword(@Param("username") String username, @Param("password") String password);
 }

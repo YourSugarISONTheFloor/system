@@ -26,7 +26,8 @@
                                         <label class="layui-form-label" th:text="#{forget.account}"></label>
                                         <div class="layui-input-block">
                                             <input type="text" th:placeholder="#{forget.fill}"
-                                                   class="layui-input account" lay-verify="phone"
+                                                   name="username"
+                                                   class="layui-input account" lay-verify="email"
                                                    required="required"
                                                    autocomplete="new-password"/>
                                         </div>
@@ -35,6 +36,7 @@
                                         <label class="layui-form-label" th:text="#{forget.set}"></label>
                                         <div class="layui-input-block">
                                             <input type="password" th:placeholder="#{forget.setPassword}"
+                                                   name="password"
                                                    class="layui-input password_1" lay-verify="pass"
                                                    required="required"
                                                    autocomplete="new-password"/>
@@ -66,9 +68,16 @@
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
+                                        <label class="layui-form-label" th:text="#{forget.usernam}"></label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="name" th:placeholder="#{forget.fillname}" class="layui-input"
+                                                    autocomplete="new-password"/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
                                         <label class="layui-form-label" th:text="#{forget.code}"></label>
                                         <div class="layui-input-block">
-                                            <input type="text" th:placeholder="#{login.code}" class="layui-input"
+                                            <input type="text" name="code" th:placeholder="#{login.code}" class="layui-input"
                                                    lay-verify="number" required="required" autocomplete="new-password"/>
                                         </div>
                                     </div>

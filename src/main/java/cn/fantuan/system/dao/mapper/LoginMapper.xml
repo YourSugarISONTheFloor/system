@@ -4,4 +4,7 @@
     <select id="getUser" parameterType="String" resultType="cn.fantuan.system.entities.User">
         select * from sys_user where phone=#{username}
     </select>
+    <update id="updatePassword">
+        UPDATE sys_user SET password = #{password} WHERE email = #{username}
+    </update>
 </mapper>

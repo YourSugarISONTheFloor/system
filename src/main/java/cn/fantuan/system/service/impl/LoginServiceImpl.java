@@ -20,10 +20,9 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public Object getUser(String username, String password) {
         User user = loginDao.getUser(username);
-        System.out.println(user);
         if (user != null) {
             if (user.getPassword().equals(password)) {
-                session.setAttribute("user",user.getName());
+                session.setAttribute("session_user", user.getName());
                 return new CommonResult(1, "可以登录", user);
             } else {
                 return new CommonResult(2, "密码错误", null);
@@ -31,5 +30,11 @@ public class LoginServiceImpl implements LoginService {
         } else {
             return new CommonResult(0, "该用户走丢啦", null);
         }
+    }
+
+    //跟新密码
+    @Override
+    public Integer updatePassword(String password, String username) {
+        return loginDao.updatePassword(username,password);
     }
 }

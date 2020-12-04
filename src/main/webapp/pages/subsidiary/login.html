@@ -10,8 +10,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" th:href="@{/styles/lib/layui-v2.5.5/css/layui.css}" media="all">
-    <!--导入自定义的一些公共方法-->
-    <script th:src="@{/styles/js/my_function.js}"></script>
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -234,6 +232,7 @@
             position: absolute;
             right: 110px;
         }
+
         .login-main .login-bottom .tip .forget-password:hover {
             color: red;
         }
@@ -246,6 +245,7 @@
             position: absolute;
             right: 62px;
         }
+
         .login-main .login-bottom .tip .registered:hover {
             color: red;
         }
@@ -354,6 +354,9 @@
     [[#{login.footer}]]<span class="padding-5">|</span><a target="_blank" href="http://www.miitbeian.gov.cn">[[#{login.number}]]</a>
 </div>
 <script th:src="@{/styles/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
+<script th:src="@{/styles/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
+<!--导入自定义的一些公共方法-->
+<script th:src="@{/styles/js/my_function.js}"></script>
 <script type="text/javascript">
     //<![CDATA[
     layui.use(['form', 'jquery'], function () {
@@ -362,8 +365,8 @@
             layer = layui.layer;
 
         //获取页面中的错误信息
-        var msg="[[${msg}]]"
-        if(msg!=""){
+        var msg = "[[${msg}]]"
+        if (msg != "") {
             layer.msg(msg);
         }
 
@@ -401,15 +404,15 @@
         $('.registered').on('click', function () {
             MyMethod.language('/registered');
         });
-        if(sessionStorage.getItem("user")!=""){
+        if (sessionStorage.getItem("user") != "") {
             $("input[name='username']").val(sessionStorage.getItem("user"));
             $("input[name='password']").val(sessionStorage.getItem("word"));
         }
         // 进行登录操作
         form.on('submit(login)', function (data) {
             data = data.field;
-            sessionStorage.setItem("user",data.username);
-            sessionStorage.setItem("word",data.password);
+            sessionStorage.setItem("user", data.username);
+            sessionStorage.setItem("word", data.password);
             if (data.username == '') {
                 layer.msg('[[#{login.usernameNull}]]');
                 return false;
@@ -422,27 +425,21 @@
                 layer.msg('[[#{login.codeNull}]]');
                 return false;
             }
-            $.ajax({
-                type:"get",
-                url:"/logging",
-                async: false,
-                data:data,
-                success: function(rest){
-                    if(rest.code==1){
-                        MyMethod.language('/');
-                    }else if(rest.code==2){
-                        layer.msg(rest.message)
-                    }else{
-                        layer.msg(rest.message);
-                    }
-                    return false;
-                },
-                error:function (rest) {
-                    layer.msg(rest);
+            ajax_data.data = data;
+            ajax_data.async = false;
+            ajax_data.dataType="json";
+            ajax_data.url = "/logging";
+            ajax_data.success = function (rest) {
+                if (rest.code == 1) {
+                    MyMethod.language('/');
+                } else if (rest.code == 2) {
+                    layer.msg(rest.message);
+                } else {
+                    layer.msg(rest.message);
                 }
-            })
+            };
+            MyMethod.ajax();
             return false;
-
         });
     });
     // ]]>
