@@ -147,7 +147,7 @@
                 //下拉列表的选中事件
                 $(".layui-anim-upbit dd").on('click', function () {
                     //判断元素是否为不可点击状态
-                    if($(this).prop("disabled") == true){
+                    if ($(this).prop("disabled") == true) {
                         account = $(this).attr("lay-value");
                     }
                     if (account == 1) {
@@ -179,29 +179,58 @@
                         $('.account_two').text($('.account').val());
                         step.next('#stepForm');
                     } else {
-                        layer.msg("[[#{forget.msg_pass}]]");
+                        layer.msg("[[#{forget.msg_pass}]]", {icon: 2, time: 3 * 1000, shift: 6});
                     }
                     return false;
                 });
 
                 form.on('submit(formStep2)', function (data) {
-                    if($("input[name='code']").val()==""){
-                        layer.msg('[[#{forget.codeMsg}]]')
+                    if ($("input[name='code']").val() == "") {
+                        layer.msg('[[#{forget.codeMsg}]]', {icon: 2, time: 3 * 1000, shift: 6})
                         return false;
                     }
-                    ajax({code:$("input[name='code']").val()},"/ifCode",function (rest) {
-                        console.log(rest);
-                        if(rest==1){
-                            ajax({password:$("input[name='password']").val(),username:$('.account').val()},"/updatePassword",function () {
-                                if(rest==1){
+                    ajax({code: $("input[name='code']").val()}, "/forgetPassword/ifCode", function (data) {
+                        if (data == 1) {
+                            ajax({
+                                password: $("input[name='password']").val(),
+                                username: $('.account').val()
+                            }, "/forgetPassword/updatePassword", function (rest) {
+                                if (rest.code == 1) {
                                     //分布表单下一步
                                     step.next('#stepForm');
-                                }else{
-                                    layer.msg()
+                                } else {
+                                    layer.msg(rest.message, {icon: 2, time: 3 * 1000, shift: 6})
                                 }
-                            })
-                        }else{
-                            layer.msg('aaa')
+                            }, "json")
+                        } else {
+                            layer.msg('[[#{forget.codeMsg}]]', {icon: 2, time: 3 * 1000, shift: 6})
+                        }
+                    });
+                    return false;
+                });
+
+                form.on('submit(formStep3)', function (data) {
+                    if ($("input[name='code']").val() == "") {
+                        layer.msg('[[#{forget.codeMsg}]]', {icon: 2, time: 3 * 1000, shift: 6})
+                        return false;
+                    }
+                    ajax({code: $("input[name='code']").val()}, "/forgetPassword/ifCode", function (data) {
+                        if (data == 1) {
+                            ajax({
+                                password: $("input[name='password']").val(),
+                                username: $('.account').val(),
+                                name: $("input[name='name']").val()
+                            }, "/registered/addUser", function (rests) {
+                                console.log(rests)
+                                if (rests.code == 1) {
+                                    //分布表单下一步
+                                    step.next('#stepForm');
+                                } else {
+                                    layer.msg(rests.message, {icon: 2, time: 3 * 1000, shift: 6})
+                                }
+                            }, "JSON")
+                        } else {
+                            layer.msg('[[#{forget.codeMsg}]]', {icon: 2, time: 3 * 1000, shift: 6})
                         }
                     });
                     return false;
@@ -217,7 +246,7 @@
                     if (!btn_getCode) {
                         btn_getCode = true;
                         getcode($(this));
-                        ajax({user:$('.account_two').text()},"/getCode");
+                        ajax({user: $('.account_two').text()}, "/forgetPassword/getCode");
                     } else {
                         return false;
                     }
@@ -260,10 +289,11 @@
                     }, 1000);
                 }
                 //发送异步请求，获取验证码
-                var ajax = function (user,url,success) {
+                var ajax = function (user, url, success, dataType) {
                     ajax_data.data = user;
-                    ajax_data.success=success;
+                    ajax_data.success = success;
                     ajax_data.url = url;
+                    ajax_data.dataType = dataType;
                     MyMethod.ajax();
                 }
             }

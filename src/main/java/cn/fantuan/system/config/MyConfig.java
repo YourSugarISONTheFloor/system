@@ -24,7 +24,7 @@ public class MyConfig implements WebMvcConfigurer {
         //拦截请求addPathPatterns("/**")，拦截所有请求。
         //排除拦截请求excludePathPatterns("/login","/log")
         //springboot已经做好静态文件的映射，不用处理静态资源了
-        registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns("/login","/logging","/codeImage","/forgetPassword","/registered","/getCode","/styles/**");
+        registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns("/login","/logging","/codeImage","/forgetPassword","/registered","/forgetPassword/**","/registered/**","/styles/**");
     }
 
 

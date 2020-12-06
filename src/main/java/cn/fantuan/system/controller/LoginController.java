@@ -7,9 +7,7 @@ import cn.fantuan.system.util.SendEmailServlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -47,7 +45,7 @@ public class LoginController {
     }
 
     //获取验证码
-    @GetMapping("/getCode")
+    @GetMapping("/forgetPassword/getCode")
     @ResponseBody
     public Integer getCode(String user,HttpSession session) {
         if(user.matches(EMAIL)){
@@ -59,10 +57,9 @@ public class LoginController {
     }
 
     //判断验证码是否正确
-    @GetMapping("/ifCode")
+    @RequestMapping("/forgetPassword/ifCode")
     @ResponseBody
     public Integer ifCode(String code,HttpSession session){
-        System.out.println("ifCode");
         if (session.getAttribute("session_EmailCode") != null) {
             if (!code.equals(session.getAttribute("session_EmailCode").toString())) {
                 return 0;
@@ -82,13 +79,21 @@ public class LoginController {
                 return new CommonResult(2, "验证码错误", null);
             }
         }
-        return loginService.getUser(username, password);
+        return loginService.getUserTo(username, password);
     }
 
     //忘记密码中的跟新密码
-    @GetMapping("/updatePassword")
+    @GetMapping("/forgetPassword/updatePassword")
     @ResponseBody
-    public Integer updatePassword(String password,String username){
+    public Object updatePassword(String password,String username){
         return loginService.updatePassword(password,username);
+    }
+
+    //用户注册
+    @GetMapping("/registered/addUser")
+    @ResponseBody
+    public Object addUser(String username, String password, String name){
+        System.out.println("addUser");
+        return loginService.addUser(username,password,name);
     }
 }

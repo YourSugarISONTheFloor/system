@@ -40,30 +40,30 @@
         }
 
         .login-main .login-bottom .center .item .icon-1 {
-            background: url(styles/images/icon-login.png) no-repeat 1px 0;
+            background: url(/styles/images/icon-login.png) no-repeat 1px 0;
         }
 
         .login-main .login-bottom .center .item .icon-2 {
-            background: url(styles/images/icon-login.png) no-repeat -54px 0;
+            background: url(/styles/images/icon-login.png) no-repeat -54px 0;
         }
 
         .login-main .login-bottom .center .item .icon-3 {
-            background: url(styles/images/icon-login.png) no-repeat -106px 0;
+            background: url(/styles/images/icon-login.png) no-repeat -106px 0;
         }
 
         .login-main .login-bottom .center .item .icon-4 {
-            background: url(styles/images/icon-login.png) no-repeat 0 -43px;
+            background: url(/styles/images/icon-login.png) no-repeat 0 -43px;
             position: absolute;
             right: -10px;
             cursor: pointer;
         }
 
         .login-main .login-bottom .center .item .icon-5 {
-            background: url(styles/images/icon-login.png) no-repeat -55px -43px;
+            background: url(/styles/images/icon-login.png) no-repeat -55px -43px;
         }
 
         .login-main .login-bottom .center .item .icon-6 {
-            background: url(styles/images/icon-login.png) no-repeat 0 -93px;
+            background: url(/styles/images/icon-login.png) no-repeat 0 -93px;
             position: absolute;
             right: -10px;
             margin-top: 8px;
@@ -87,7 +87,7 @@
             width: 14px;
             height: 14px;
             border: none;
-            background: url(styles/images/icon-login.png) no-repeat -111px -48px;
+            background: url(/styles/images/icon-login.png) no-repeat -111px -48px;
         }
 
         .login-main .login-bottom .center .item .icon {
@@ -177,7 +177,7 @@
         }
 
         body {
-            background: url(styles/images/loginbg.png) 0% 0% / cover no-repeat;
+            background: url(/styles/images/loginbg.png) 0% 0% / cover no-repeat;
             position: static;
             font-size: 12px;
         }
@@ -367,7 +367,7 @@
         //获取页面中的错误信息
         var msg = "[[${msg}]]"
         if (msg != "") {
-            layer.msg(msg);
+            layer.msg(msg, {icon: 2, time: 3 * 1000, shift: 6});
         }
 
         // 登录过期的时候，跳出ifram框架
@@ -414,28 +414,29 @@
             sessionStorage.setItem("user", data.username);
             sessionStorage.setItem("word", data.password);
             if (data.username == '') {
-                layer.msg('[[#{login.usernameNull}]]');
+                layer.msg('[[#{login.usernameNull}]]', {icon: 2, time: 3 * 1000, shift: 6});
                 return false;
             }
             if (data.password == '') {
-                layer.msg('[[#{login.passwordNull}]]');
+                layer.msg('[[#{login.passwordNull}]]', {icon: 2, time: 3 * 1000, shift: 6});
                 return false;
             }
             if (data.clod == '') {
-                layer.msg('[[#{login.codeNull}]]');
+                layer.msg('[[#{login.codeNull}]]', {icon: 2, time: 3 * 1000, shift: 6});
                 return false;
             }
             ajax_data.data = data;
             ajax_data.async = false;
-            ajax_data.dataType="json";
+            ajax_data.dataType = "json";
             ajax_data.url = "/logging";
             ajax_data.success = function (rest) {
+                console.log(rest)
                 if (rest.code == 1) {
                     MyMethod.language('/');
                 } else if (rest.code == 2) {
-                    layer.msg(rest.message);
+                    layer.msg(rest.message, {icon: 2, time: 3 * 1000, shift: 6});
                 } else {
-                    layer.msg(rest.message);
+                    layer.msg(rest.message, {icon: 2, time: 3 * 1000, shift: 6});
                 }
             };
             MyMethod.ajax();
