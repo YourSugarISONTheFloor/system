@@ -1,9 +1,11 @@
 package cn.fantuan.system.service.impl;
 
 import cn.fantuan.system.entities.SysMenu;
+import cn.fantuan.system.mapper.SysMenuServiceMapper;
 import cn.fantuan.system.service.SysMenuService;
 import cn.fantuan.system.util.TreeUtil;
 import cn.fantuan.system.vo.MenuVo;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class SysMenuServiceImpl implements SysMenuService {
+public class SysMenuServiceImpl extends ServiceImpl<SysMenuServiceMapper, SysMenu> implements SysMenuService {
 	@Override
 	public Map<String, Object> menu() {
 		Map<String, Object> map = new HashMap<>(16);

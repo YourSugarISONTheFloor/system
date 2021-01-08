@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,6 +20,16 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
 	//目标方法执行之前
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+		Cookie[] cookies = request.getCookies();//这样便可以获取一个cookie数组
+		if (null==cookies) {
+			System.out.println("没有cookie=========");
+		} else {
+			for(Cookie cookie : cookies){
+				System.out.println("name:"+cookie.getName()+",value:"+ cookie.getValue());
+			}
+		}
+
 		System.out.println("拦截器：" + request.getServletPath());
 		//获取请求头中的token
 		String token = request.getHeader("token");

@@ -176,10 +176,6 @@
             ],
         });
 
-        ajax_notData('/', 'GET', function (rest) {
-            console.log(rest.data);
-        });
-
         //语言切换事件
         $('.language dd').on('click', function () {
             if ($(this).children().text() === "中文") {

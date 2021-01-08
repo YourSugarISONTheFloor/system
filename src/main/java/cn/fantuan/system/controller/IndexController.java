@@ -40,6 +40,8 @@ public class IndexController {
 	@RequestMapping("/logout")
 	public String logout(HttpServletRequest request) {
 		loginService.logout(String.valueOf(request.getHeaders("token")));
+		//redirect重定向
+		//redirect转发
 		return "redirect:/login";
 	}
 }

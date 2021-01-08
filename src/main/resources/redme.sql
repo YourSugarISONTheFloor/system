@@ -19,3 +19,23 @@ CREATE TABLE `sys_menu` (
   KEY `title` (`title`),
   KEY `href` (`href`)
 ) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='系统菜单表';
+
+-- -----------------------------
+-- 用户表
+-- -----------------------------
+DROP TABLE IF EXISTS sys_user;
+CREATE TABLE `sys_user` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `phone` bigint(11) unsigned  DEFAULT '0' COMMENT '手机号',
+  `email` varchar(100)  DEFAULT '' COMMENT '邮箱',
+  `password` varchar(100) NOT NULL DEFAULT '' COMMENT '密码',
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '用户名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='用户表';
+
+-- -----------------------------
+-- 用户表初始数据
+-- -----------------------------
+INSERT INTO `system`.`sys_user`(`id`, `phone`, `email`, `password`, `name`) VALUES (1, 17628172559, '1317524710@qq.com', '123456q', '饭团');
+INSERT INTO `system`.`sys_user`(`id`, `phone`, `email`, `password`, `name`) VALUES (2, NULL, '212025682@qq.com', '123456q', '橙子');
+INSERT INTO `system`.`sys_user`(`id`, `phone`, `email`, `password`, `name`) VALUES (3, NULL, '1664904182@qq.com', '123456q', '姚灿');

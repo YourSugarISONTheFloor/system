@@ -1,5 +1,7 @@
-package cn.fantuan.system.entities;
+package cn.fantuan.system.entities.outside;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +14,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @TableName("sys_user")
 public class User implements Serializable {
-	private Integer id;
+	@TableId(type = IdType.AUTO)
+	private Long id;
 	private Long phone;
 	private String email;
 	private String password;
