@@ -1,5 +1,6 @@
-package cn.fantuan.system.util;
+package cn.fantuan.system.util.email;
 
+import cn.fantuan.system.util.code.CodeUtil;
 import org.springframework.stereotype.Service;
 
 import javax.mail.Session;

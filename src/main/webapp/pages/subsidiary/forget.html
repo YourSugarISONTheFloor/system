@@ -189,23 +189,23 @@
                         layer.msg('[[#{forget.codeMsg}]]', {icon: 2, time: 3 * 1000, shift: 6})
                         return false;
                     }
-                    ajax({code: $("input[name='code']").val()}, "/forgetPassword/ifCode", function (data) {
-                        if (data == 1) {
-                            ajax({
+                    ajax_hasData("/forgetPassword/ifCode", "GET", {code: $("input[name='code']").val()}, function (data) {
+                        if (data == 409) {
+                            ajax_hasData("/forgetPassword/updatePassword", "GET", {
                                 password: $("input[name='password']").val(),
                                 username: $('.account').val()
-                            }, "/forgetPassword/updatePassword", function (rest) {
-                                if (rest.code == 1) {
+                            }, function (rest) {
+                                if (rest.code == 230) {
                                     //分布表单下一步
                                     step.next('#stepForm');
                                 } else {
                                     layer.msg(rest.message, {icon: 2, time: 3 * 1000, shift: 6})
                                 }
-                            }, "json")
+                            })
                         } else {
                             layer.msg('[[#{forget.codeMsg}]]', {icon: 2, time: 3 * 1000, shift: 6})
                         }
-                    });
+                    })
                     return false;
                 });
 
@@ -214,21 +214,21 @@
                         layer.msg('[[#{forget.codeMsg}]]', {icon: 2, time: 3 * 1000, shift: 6})
                         return false;
                     }
-                    ajax({code: $("input[name='code']").val()}, "/forgetPassword/ifCode", function (data) {
-                        if (data == 1) {
-                            ajax({
+                    ajax_hasData("/forgetPassword/ifCode", "GET", {code: $("input[name='code']").val()}, function (data) {
+                        if (data == 409) {
+                            ajax_hasData("/registered/addUser", "GET", {
                                 password: $("input[name='password']").val(),
                                 username: $('.account').val(),
                                 name: $("input[name='name']").val()
-                            }, "/registered/addUser", function (rests) {
+                            }, function (rests) {
                                 console.log(rests)
-                                if (rests.code == 1) {
+                                if (rests.code == 220) {
                                     //分布表单下一步
                                     step.next('#stepForm');
                                 } else {
                                     layer.msg(rests.message, {icon: 2, time: 3 * 1000, shift: 6})
                                 }
-                            }, "JSON")
+                            })
                         } else {
                             layer.msg('[[#{forget.codeMsg}]]', {icon: 2, time: 3 * 1000, shift: 6})
                         }
@@ -246,7 +246,7 @@
                     if (!btn_getCode) {
                         btn_getCode = true;
                         getcode($(this));
-                        ajax({user: $('.account_two').text()}, "/forgetPassword/getCode");
+                        ajax_hasData("/forgetPassword/getCode", null, {user: $('.account_two').text()})
                     } else {
                         return false;
                     }
@@ -287,14 +287,6 @@
                             return;
                         }
                     }, 1000);
-                }
-                //发送异步请求，获取验证码
-                var ajax = function (user, url, success, dataType) {
-                    ajax_data.data = user;
-                    ajax_data.success = success;
-                    ajax_data.url = url;
-                    ajax_data.dataType = dataType;
-                    MyMethod.ajax();
                 }
             }
         )

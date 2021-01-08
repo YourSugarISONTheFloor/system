@@ -1,4 +1,4 @@
-package cn.fantuan.system.util;
+package cn.fantuan.system.util.email;
 
 /**
  * 定义邮箱内容

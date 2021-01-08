@@ -7,4 +7,8 @@ public interface LoginService {
     Object updatePassword(String password, String username);
     //添加用户
     Object addUser(String username, String password, String name);
+
+	Object logout(String token);
+
+	Object look(String token);
 }

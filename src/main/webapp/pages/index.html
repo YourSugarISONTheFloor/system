@@ -17,7 +17,6 @@
     <link rel="stylesheet" th:href="@{/styles/css/layuimini.css?v=2.0.4.2}" media="all">
     <link rel="stylesheet" th:href="@{/styles/css/themes/default.css}" media="all">
     <link rel="stylesheet" th:href="@{/styles/lib/font-awesome-4.7.0/css/font-awesome.min.css}" media="all">
-    <script th:src="@{/styles/js/my_function.js}"></script>
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -143,6 +142,10 @@
 </div>
 <script th:src="@{/styles/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
 <script th:src="@{/styles/js/lay-config.js?v=2.0.0}" charset="utf-8"></script>
+<script th:src="@{/styles/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
+
+<script th:src="@{/styles/js/my_function.js}"></script>
+
 <script>
     layui.use(['jquery', 'layer', 'miniAdmin', 'miniTongji'], function () {
         var $ = layui.jquery,
@@ -173,6 +176,10 @@
             ],
         });
 
+        ajax_notData('/', 'GET', function (rest) {
+            console.log(rest.data);
+        });
+
         //语言切换事件
         $('.language dd').on('click', function () {
             if ($(this).children().text() === "中文") {
@@ -183,6 +190,7 @@
                 MyMethod.language('/login')
             }
         })
+
         $('.login-out').on("click", function () {
             layer.msg('退出登录成功', function () {
                 MyMethod.language('/logout')

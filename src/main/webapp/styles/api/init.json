@@ -19,6 +19,25 @@
           "title": "菜单管理",
           "href": "menu",
           "icon": "fa fa-window-maximize"
+        },{
+          "title": "菜单管理",
+          "href": "menu",
+          "icon": "fa fa-window-maximize"
+        },{
+          "title": "菜单管理",
+          "href": "",
+          "icon": "fa fa-window-maximize",
+          "child":[
+            {
+              "title": "菜单管理",
+              "href": "menu",
+              "icon": "fa fa-window-maximize"
+            },{
+              "title": "菜单管理",
+              "href": "menu",
+              "icon": "fa fa-window-maximize"
+            }
+          ]
         }
       ]
     },

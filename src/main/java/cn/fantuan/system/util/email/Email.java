@@ -1,4 +1,4 @@
-package cn.fantuan.system.util;
+package cn.fantuan.system.util.email;
 
 import javax.mail.MessagingException;
 import javax.mail.Session;

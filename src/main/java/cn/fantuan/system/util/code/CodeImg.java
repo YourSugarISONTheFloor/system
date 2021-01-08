@@ -1,4 +1,4 @@
-package cn.fantuan.system.util;
+package cn.fantuan.system.util.code;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class CodeImg {
         g.setColor(Color.YELLOW);
         g.drawRect(0, 0, width - 1, height - 1);
         // 写验证码
-        String str = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjklmnpqrstuvwxyz23456789";
+        String str = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
         // 生成一个随机角标
         Random ran = new Random();
         StringBuilder sb = new StringBuilder();

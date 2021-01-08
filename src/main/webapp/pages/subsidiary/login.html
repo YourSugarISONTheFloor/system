@@ -70,18 +70,6 @@
             cursor: pointer;
         }
 
-        .login-main .login-bottom .tip .icon-nocheck {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 2px;
-            border: solid 1px #9abcda;
-            position: relative;
-            top: 2px;
-            margin: 1px 8px 1px 1px;
-            cursor: pointer;
-        }
-
         .login-main .login-bottom .tip .icon-check {
             margin: 0 7px 0 0;
             width: 14px;
@@ -214,14 +202,23 @@
             margin: 0 auto;
         }
 
-        .login-main .login-bottom .tip .login-tip {
-            font-family: MicrosoftYaHei;
-            font-size: 12px;
-            font-weight: 400;
-            font-stretch: normal;
-            letter-spacing: 0;
-            color: #9abcda;
-            cursor: pointer;
+        .layui-form-checkbox[lay-skin=primary] {
+            padding-left: 18px;
+        }
+
+        .layui-form-checkbox[lay-skin=primary] i {
+            top: 2px;
+            width: 10px;
+            height: 10px;
+            line-height: 10px;
+        }
+
+        .layui-form-checkbox span {
+            font-size: 12px !important;
+        }
+
+        .login-main .login-bottom .tip input {
+
         }
 
         .login-main .login-bottom .tip .forget-password {
@@ -334,13 +331,12 @@
 
                 <div id="validatePanel" class="item" style="width: 137px;">
                     <input type="text" name="clod" th:placeholder="#{login.code}" maxlength="4">
-                    <img id="refreshCaptcha" class="validateImg" src="/codeImage" title="看不清，换一张">
+                    <img id="refreshCaptcha" class="validateImg" src="/codeImage" th:title="#{login.look}">
                 </div>
 
             </div>
             <div class="tip">
-                <span class="icon-nocheck"></span>
-                <span class="login-tip" th:text="#{login.stay}"></span>
+                <input type="checkbox" name="choice" th:title="#{login.stay}" lay-skin="primary" checked>
                 <a href="javascript:" class="forget-password" th:text="#{login.forget}"></a>
                 <a href="javascript:" class="registered" th:text="#{login.registered}"></a>
             </div>
@@ -372,7 +368,7 @@
 
         // 登录过期的时候，跳出ifram框架
         if (top.location != self.location) top.location = self.location;
-
+        //查看密码
         $('.bind-password').on('click', function () {
             if ($(this).hasClass('icon-5')) {
                 $(this).removeClass('icon-5');
@@ -382,7 +378,7 @@
                 $("input[name='password']").attr('type', 'text');
             }
         });
-        //查看密码
+        //保持登录
         $('.icon-nocheck').on('click', function () {
             if ($(this).hasClass('icon-check')) {
                 $(this).removeClass('icon-check');
@@ -392,9 +388,8 @@
         });
         //看不清，换一张
         $('#refreshCaptcha').on('click', function () {
-            this.src = this.src + '?time=' + (new Date).getTime();
+            this.src = '/codeImage?time=' + (new Date).getTime();
         })
-
         //忘记密码
         $('.forget-password').on('click', function () {
             MyMethod.language('/forgetPassword');
@@ -425,21 +420,18 @@
                 layer.msg('[[#{login.codeNull}]]', {icon: 2, time: 3 * 1000, shift: 6});
                 return false;
             }
-            ajax_data.data = data;
-            ajax_data.async = false;
-            ajax_data.dataType = "json";
-            ajax_data.url = "/logging";
-            ajax_data.success = function (rest) {
+            ajax_hasData('/logging', null, data, function (rest) {
                 console.log(rest)
-                if (rest.code == 1) {
-                    MyMethod.language('/');
-                } else if (rest.code == 2) {
-                    layer.msg(rest.message, {icon: 2, time: 3 * 1000, shift: 6});
+                if (rest.code == 200) {
+                    //存储token
+                    localStorage.token = rest.data;
+                    ajax_hasData('/');
                 } else {
                     layer.msg(rest.message, {icon: 2, time: 3 * 1000, shift: 6});
                 }
-            };
-            MyMethod.ajax();
+            }, null, false);
+            //更换验证码
+            $('#refreshCaptcha').click();
             return false;
         });
     });
