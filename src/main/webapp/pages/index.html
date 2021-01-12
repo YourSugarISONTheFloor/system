@@ -12,7 +12,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <link rel="icon" th:href="@{/styles/images/favicon.ico}">
+    <link rel="icon" th:href="@{/styles/images/favicon.ico}" type="image/x-icon">
     <link rel="stylesheet" th:href="@{/styles/lib/layui-v2.5.5/css/layui.css}" media="all">
     <link rel="stylesheet" th:href="@{/styles/css/layuimini.css?v=2.0.4.2}" media="all">
     <link rel="stylesheet" th:href="@{/styles/css/themes/default.css}" media="all">
@@ -71,7 +71,7 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item layuimini-setting">
-                    <a href="javascript:;">[[${session.session_user}]]</a>
+                    <a id="user_name" href="javascript:;"></a>
                     <dl class="layui-nav-child">
                         <dd>
                             <a href="javascript:;" layuimini-content-href="page/user-setting.html" data-title="基本资料"
@@ -143,7 +143,7 @@
 <script th:src="@{/styles/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
 <script th:src="@{/styles/js/lay-config.js?v=2.0.0}" charset="utf-8"></script>
 <script th:src="@{/styles/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
-
+<!--引入自定以的方法-->
 <script th:src="@{/styles/js/my_function.js}"></script>
 
 <script>
@@ -154,7 +154,7 @@
             miniTongji = layui.miniTongji;
 
         var options = {
-            iniUrl: "styles/api/init.json",    // 初始化接口
+            iniUrl: "/menu",    // 初始化接口
             clearUrl: "styles/api/clear.json", // 缓存清理接口
             urlHashLocation: true,      // 是否打开hash定位
             bgColorDefault: false,      // 主题默认配置
@@ -176,14 +176,20 @@
             ],
         });
 
+        //获取用户信息
+        MyMethod.getUser();
+        $('#user_name').text(JSON.parse(localStorage.user).name);
+
         //语言切换事件
         $('.language dd').on('click', function () {
             if ($(this).children().text() === "中文") {
-                sessionStorage.setItem("language", "zh_CN");
-                location.reload(true);
+                sessionStorage.language = "zh_CN";
+                //页面强制刷新
+                // location.reload(true);
+                MyMethod.language('/')
             } else {
-                sessionStorage.setItem("language", "en_US");
-                MyMethod.language('/login')
+                sessionStorage.language = "en_US";
+                MyMethod.language('/')
             }
         })
 

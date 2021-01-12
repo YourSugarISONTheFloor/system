@@ -20,21 +20,29 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
 	//目标方法执行之前
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
-		Cookie[] cookies = request.getCookies();//这样便可以获取一个cookie数组
-		if (null==cookies) {
-			System.out.println("没有cookie=========");
-		} else {
-			for(Cookie cookie : cookies){
-				System.out.println("name:"+cookie.getName()+",value:"+ cookie.getValue());
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Credentials", "true");
+		response.setHeader("Access-Control-Allow-Methods", "*");
+		response.setHeader("Access-Control-Allow-Headers", "token");
+		response.setHeader("Access-Control-Expose-Headers", "*");
+		System.out.println("拦截器拦截的路径请求为：" + request.getServletPath());
+		System.out.println("请求头中的token为：" + request.getHeader("token"));
+		String token = "";
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null && cookies.length > 0) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("token")) {
+					token = cookie.getValue();
+				}
 			}
 		}
+//		//获取请求头中的token
+//		String token = request.getHeader("token");
+//		//判断token是否为空
+//		token = token == null ? "" : token;
 
-		System.out.println("拦截器：" + request.getServletPath());
-		//获取请求头中的token
-		String token = request.getHeader("token");
-		//判断token是否为空
-		token = token == null ? "" : token;
+		//如果cookie中没有token那么token在请求头中获取
+		token = token.equals("") ? request.getHeader("token") == null ? "" : request.getHeader("token") : token;
 		//获取token的剩余时间
 		long expire = redisUtil.getExpire(token);
 		if (expire > 0) {

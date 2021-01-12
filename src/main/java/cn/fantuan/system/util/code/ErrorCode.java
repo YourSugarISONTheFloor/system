@@ -2,6 +2,7 @@ package cn.fantuan.system.util.code;
 
 public enum ErrorCode {
 	HAPPEN_ERROR(333, "出错啦！"),
+	NOT_HAS_MENU(333,"没有该父类菜单"),
 	//验证码异常
 	CAPTCHA_ERROR(408, "验证码错误"),
 	//用户账号异常

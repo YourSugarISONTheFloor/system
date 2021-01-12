@@ -5,6 +5,7 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="icon" th:href="@{/styles/images/favicon.ico}" type="image/x-icon">
     <link rel="stylesheet" th:href="@{/styles/lib/layui-v2.5.5/css/layui.css}" media="all">
     <link rel="stylesheet" th:href="@{/styles/css/public.css}" media="all">
     <link rel="stylesheet" th:href="@{/styles/js/lay-module/step-lay/step.css}" media="all">
@@ -191,7 +192,7 @@
                     }
                     ajax_hasData("/forgetPassword/ifCode", "GET", {code: $("input[name='code']").val()}, function (data) {
                         if (data == 409) {
-                            ajax_hasData("/forgetPassword/updatePassword", "GET", {
+                            ajax_hasData("/forgetPassword/updatePassword", "POST", {
                                 password: $("input[name='password']").val(),
                                 username: $('.account').val()
                             }, function (rest) {
@@ -216,7 +217,7 @@
                     }
                     ajax_hasData("/forgetPassword/ifCode", "GET", {code: $("input[name='code']").val()}, function (data) {
                         if (data == 409) {
-                            ajax_hasData("/registered/addUser", "GET", {
+                            ajax_hasData("/registered/addUser", "POST", {
                                 password: $("input[name='password']").val(),
                                 username: $('.account').val(),
                                 name: $("input[name='name']").val()

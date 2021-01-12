@@ -21,15 +21,25 @@ function ajax_hasData(url, type, data, success, dataType, async) {
 
 //自定义方法
 var MyMethod = {
+    //获取用户信息
+    getUser: function () {
+        ajax_hasData('/user', null, null, function (rest) {
+            //可以将任意的JavaScript值序列化成JSON字符串形式,存储在本地
+            localStorage.user = JSON.stringify(rest.data);
+            //JSON.parse(localStorage.user)将JSON字符串转为对象
+            //console.log(JSON.parse(localStorage.user).name)
+        })
+    },
     //携带语言的路径
-    language: function (a) {
-        if (sessionStorage.getItem("language") === null) {
-            window.location.href = a;
+    language: function (url) {
+        console.log(sessionStorage.language)
+        if (sessionStorage.language === undefined) {
+            window.location.href = url;
         } else {
-            window.location.href = a + '?language=' + sessionStorage.getItem("language");
+            window.location.href = url + '?language=' + sessionStorage.language
         }
     },
-    //设置cookie的值，以及过期时间
+    //设置cookie的值，以及过期时间,时间为天数
     setCookie: function (name, value, exdays) {
         var d = new Date();
         d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));

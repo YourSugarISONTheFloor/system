@@ -56,7 +56,7 @@ public class LoginServiceImpl extends ServiceImpl<LoginMapper, User> implements 
 //				response.addCookie(cookie);
 
 				//添加指定token
-				redisUtil.set(token, user, 60L);
+				redisUtil.set(token, user, 10 * 24 * 60L);
 				return new CommonResult(SuccessCode.SUCCESS, token);
 			} else {
 				return new CommonResult(ErrorCode.ERROR_PASSWORD);
@@ -122,9 +122,10 @@ public class LoginServiceImpl extends ServiceImpl<LoginMapper, User> implements 
 		return new CommonResult(SuccessCode.SUCCESS, del);
 	}
 
+	//获取用户信息
 	@Override
 	public Object look(String token) {
-		Object o = redisUtil.get(token);
-		return new CommonResult(SuccessCode.SUCCESS, o);
+		Object object = redisUtil.get(token);
+		return new CommonResult(SuccessCode.SUCCESS, object);
 	}
 }

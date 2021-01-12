@@ -9,6 +9,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
+    <link rel="icon" th:href="@{/styles/images/favicon.ico}" type="image/x-icon">
     <link rel="stylesheet" th:href="@{/styles/lib/layui-v2.5.5/css/layui.css}" media="all">
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -419,12 +420,13 @@
                 layer.msg('[[#{login.codeNull}]]', {icon: 2, time: 3 * 1000, shift: 6});
                 return false;
             }
-            ajax_hasData('/logging', null, data, function (rest) {
+            ajax_hasData('/logging', 'post', data, function (rest) {
                 console.log(rest)
                 if (rest.code == 200) {
                     //存储token
                     localStorage.token = rest.data;
-                    ajax_hasData('/');
+                    MyMethod.setCookie("token", rest.data,10);
+                    MyMethod.language('/');
                 } else {
                     layer.msg(rest.message, {icon: 2, time: 3 * 1000, shift: 6});
                 }

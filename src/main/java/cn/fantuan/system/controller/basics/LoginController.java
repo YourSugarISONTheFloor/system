@@ -1,4 +1,4 @@
-package cn.fantuan.system.controller;
+package cn.fantuan.system.controller.basics;
 
 import cn.fantuan.system.entities.CommonResult;
 import cn.fantuan.system.service.LoginService;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -75,7 +76,7 @@ public class LoginController {
 	}
 
 	//根据用户输入的用户名或密码进行查询
-	@GetMapping("/logging")
+	@PostMapping("/logging")
 	@ResponseBody
 	public Object logging(String username, String password, String clod, String choice, HttpSession session) {
 		//choice为on代表选中保持登录
@@ -90,23 +91,23 @@ public class LoginController {
 	}
 
 	//忘记密码中的跟新密码
-	@GetMapping("/forgetPassword/updatePassword")
+	@PostMapping("/forgetPassword/updatePassword")
 	@ResponseBody
 	public Object updatePassword(String password, String username) {
 		return loginService.updatePassword(password, username);
 	}
 
 	//用户注册
-	@GetMapping("/registered/addUser")
+	@PostMapping("/registered/addUser")
 	@ResponseBody
 	public Object addUser(String username, String password, String name) {
 		return loginService.addUser(username, password, name);
 	}
 
-	//用户注册
-	@GetMapping("/User")
+	//获取用户信息
+	@GetMapping("/user")
 	@ResponseBody
-	public Object User(HttpServletRequest request) {
+	public Object user(HttpServletRequest request) {
 		String token = request.getHeader("token");
 		return loginService.look(token);
 	}

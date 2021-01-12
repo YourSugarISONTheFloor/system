@@ -1,27 +1,35 @@
 package cn.fantuan.system.entities;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Data
+@TableName("sys_menu")
 public class SysMenu implements Serializable {
-	// 复合主键要用这个注解
-	@TableId(type = IdType.ASSIGN_ID)
-	private MenuKey key;
+	//ID
+	@TableId(type = IdType.AUTO)
+	private Long id;
+	//父ID
 	private Long pid;
+	//名称
+	private String title;
+	//图标
 	private String icon;
+	//链接
+	private String href;
+	//链接打开方式
 	private String target;
+	//菜单排序
 	private Integer sort;
+	//状态(0:禁用,1:启用)
 	private Boolean status;
-	private String remark;
-	@CreatedDate
-	private Date create_at;
-	@CreatedDate
-	private Date update_at;
-	private Date delete_at;
+	//是否为菜单
+	//@TableField指定表中的字段名
+	@TableField("isMenu")
+	private Boolean isMenu;
 }

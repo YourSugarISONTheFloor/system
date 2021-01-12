@@ -1,11 +1,15 @@
-package cn.fantuan.system.util;
+package cn.fantuan.system.util.menu;
 
 import cn.fantuan.system.vo.MenuVo;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 菜单列表封装工具类
+ */
 public class TreeUtil {
+
 	public static List<MenuVo> toTree(List<MenuVo> treeList, Long pid) {
 		List<MenuVo> retList = new ArrayList<MenuVo>();
 		for (MenuVo parent : treeList) {
@@ -15,6 +19,7 @@ public class TreeUtil {
 		}
 		return retList;
 	}
+
 	private static MenuVo findChildren(MenuVo parent, List<MenuVo> treeList) {
 		for (MenuVo child : treeList) {
 			if (parent.getId().equals(child.getPid())) {
