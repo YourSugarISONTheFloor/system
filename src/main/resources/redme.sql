@@ -19,11 +19,12 @@ CREATE TABLE `sys_menu` (
 -- -----------------------------
 -- 菜单表初始数据
 -- -----------------------------
-INSERT INTO `system`.`sys_menu`(`id`, `pid`, `title`, `icon`, `href`, `target`, `sort`, `status`) VALUES (200, 0, '人事管理', '', '', '_self', 0, 1);
-INSERT INTO `system`.`sys_menu`(`id`, `pid`, `title`, `icon`, `href`, `target`, `sort`, `status`) VALUES (201, 0, '考勤管理', '', '', '_self', 0, 1);
-INSERT INTO `system`.`sys_menu`(`id`, `pid`, `title`, `icon`, `href`, `target`, `sort`, `status`) VALUES (202, 0, '其他管理', '', '', '_self', 0, 1);
-INSERT INTO `system`.`sys_menu`(`id`, `pid`, `title`, `icon`, `href`, `target`, `sort`, `status`) VALUES (203, 202, '菜单管理', 'fa fa-th-large', '', '_self', 0, 1);
-INSERT INTO `system`.`sys_menu`(`id`, `pid`, `title`, `icon`, `href`, `target`, `sort`, `status`) VALUES (204, 203, '添加菜单', '', '/addMenu', '_self', 0, 1);
+INSERT INTO `system`.`sys_menu`(`id`, `pid`, `title`, `icon`, `href`, `target`, `sort`, `status`, `isMenu`) VALUES (200, 0, '人事管理', '', '', '_self', 0, 1, 0);
+INSERT INTO `system`.`sys_menu`(`id`, `pid`, `title`, `icon`, `href`, `target`, `sort`, `status`, `isMenu`) VALUES (201, 0, '考勤管理', '', '', '_self', 0, 1, 0);
+INSERT INTO `system`.`sys_menu`(`id`, `pid`, `title`, `icon`, `href`, `target`, `sort`, `status`, `isMenu`) VALUES (202, 0, '其他管理', '', '', '_self', 0, 1, 0);
+INSERT INTO `system`.`sys_menu`(`id`, `pid`, `title`, `icon`, `href`, `target`, `sort`, `status`, `isMenu`) VALUES (203, 202, '菜单管理', 'fa fa-th-large', '/menu/manager', '_self', 1, 1, 1);
+INSERT INTO `system`.`sys_menu`(`id`, `pid`, `title`, `icon`, `href`, `target`, `sort`, `status`, `isMenu`) VALUES (204, 202, '用户管理', 'fa fa-user', '', '_self', 2, 1, 0);
+
 
 -- -----------------------------
 -- 用户表
