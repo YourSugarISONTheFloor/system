@@ -10,7 +10,7 @@ CREATE TABLE `sys_menu` (
   `href` varchar(100) NOT NULL DEFAULT '' COMMENT '链接',
   `target` varchar(20) NOT NULL DEFAULT '_self' COMMENT '链接打开方式',
   `sort` int(11) DEFAULT '0' COMMENT '菜单排序',
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态(0:禁用,1:启用)',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态(0:禁用,1:启用)',
   `isMenu` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态(0:菜单,1:按钮)',
   PRIMARY KEY (`id`),
   KEY `title` (`title`),
@@ -22,8 +22,9 @@ CREATE TABLE `sys_menu` (
 INSERT INTO `system`.`sys_menu`(`id`, `pid`, `title`, `icon`, `href`, `target`, `sort`, `status`, `isMenu`) VALUES (200, 0, '人事管理', '', '', '_self', 0, 1, 0);
 INSERT INTO `system`.`sys_menu`(`id`, `pid`, `title`, `icon`, `href`, `target`, `sort`, `status`, `isMenu`) VALUES (201, 0, '考勤管理', '', '', '_self', 0, 1, 0);
 INSERT INTO `system`.`sys_menu`(`id`, `pid`, `title`, `icon`, `href`, `target`, `sort`, `status`, `isMenu`) VALUES (202, 0, '其他管理', '', '', '_self', 0, 1, 0);
-INSERT INTO `system`.`sys_menu`(`id`, `pid`, `title`, `icon`, `href`, `target`, `sort`, `status`, `isMenu`) VALUES (203, 202, '菜单管理', 'fa fa-th-large', '/menu/manager', '_self', 1, 1, 1);
-INSERT INTO `system`.`sys_menu`(`id`, `pid`, `title`, `icon`, `href`, `target`, `sort`, `status`, `isMenu`) VALUES (204, 202, '用户管理', 'fa fa-user', '', '_self', 2, 1, 0);
+INSERT INTO `system`.`sys_menu`(`id`, `pid`, `title`, `icon`, `href`, `target`, `sort`, `status`, `isMenu`) VALUES (203, 202, '菜单管理', 'fa fa-th-large', 'menu/manager', '_self', 1, 1, 1);
+INSERT INTO `system`.`sys_menu`(`id`, `pid`, `title`, `icon`, `href`, `target`, `sort`, `status`, `isMenu`) VALUES (204, 202, '用户管理', 'fa fa-database', '', '_self', 2, 1, 0);
+INSERT INTO `system`.`sys_menu`(`id`, `pid`, `title`, `icon`, `href`, `target`, `sort`, `status`, `isMenu`) VALUES (205, 204, '权限管理', '', 'user/role', '_self', 1, 1, 1);
 
 
 -- -----------------------------

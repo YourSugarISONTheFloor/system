@@ -1,7 +1,7 @@
 package cn.fantuan.system.config;
 
-import cn.fantuan.system.util.RedisUtil;
-import cn.fantuan.system.util.code.ErrorCode;
+import cn.fantuan.system.modular.util.RedisUtil;
+import cn.fantuan.system.modular.util.code.ErrorCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
