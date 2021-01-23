@@ -12,10 +12,12 @@ CREATE TABLE `sys_menu` (
   `sort` int(11) DEFAULT '0' COMMENT '菜单排序',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态(0:禁用,1:启用)',
   `isMenu` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态(0:菜单,1:按钮)',
+  `permission` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '权限名称',
   PRIMARY KEY (`id`),
   KEY `title` (`title`),
   KEY `href` (`href`)
 ) ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='系统菜单表';
+
 -- -----------------------------
 -- 菜单表初始数据
 -- -----------------------------
@@ -37,12 +39,59 @@ CREATE TABLE `sys_user` (
   `email` varchar(100)  DEFAULT '' COMMENT '邮箱',
   `password` varchar(100) NOT NULL DEFAULT '' COMMENT '密码',
   `name` varchar(100) NOT NULL DEFAULT '' COMMENT '用户名称',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户状态（0：正常(默认值)，1：禁用，2：锁定',
+  `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='用户表';
 
 -- -----------------------------
 -- 用户表初始数据
 -- -----------------------------
-INSERT INTO `system`.`sys_user`(`id`, `phone`, `email`, `password`, `name`) VALUES (1, 17628172559, '1317524710@qq.com', '123456q', '饭团');
-INSERT INTO `system`.`sys_user`(`id`, `phone`, `email`, `password`, `name`) VALUES (2, NULL, '212025682@qq.com', '123456q', '橙子');
-INSERT INTO `system`.`sys_user`(`id`, `phone`, `email`, `password`, `name`) VALUES (3, NULL, '1664904182@qq.com', '123456q', '姚灿');
+INSERT INTO `system`.`sys_user`(`id`, `phone`, `email`, `password`, `name`, `status`, `avatar`) VALUES (1, 17600000000, '123@qq.com', '123456q', '圆子', 0, NULL);
+INSERT INTO `system`.`sys_user`(`id`, `phone`, `email`, `password`, `name`, `status`, `avatar`) VALUES (2, 17628172559, '1317524710@qq.com', '123456q', '饭团', 0, NULL);
+INSERT INTO `system`.`sys_user`(`id`, `phone`, `email`, `password`, `name`, `status`, `avatar`) VALUES (3, NULL, '212025682@qq.com', '123456q', '橙子', 0, NULL);
+INSERT INTO `system`.`sys_user`(`id`, `phone`, `email`, `password`, `name`, `status`, `avatar`) VALUES (4, NULL, '1664904182@qq.com', '123456q', '姚灿', 0, NULL);
+
+
+-- -----------------------------
+-- 角色表
+-- -----------------------------
+DROP TABLE IF EXISTS sys_role;
+CREATE TABLE `sys_role` (
+  `role_id` bigint(20) NOT NULL COMMENT '角色id',
+  `name` varchar(100) DEFAULT NULL COMMENT '角色名称',
+  `remark` varchar(100) DEFAULT NULL COMMENT '角色描述',
+  `dep_id` bigint(20) DEFAULT NULL COMMENT '部门ID',
+  PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色表';
+
+-- -----------------------------
+-- 角色表初始数据
+-- -----------------------------
+INSERT INTO `system`.`sys_role`(`role_id`, `name`, `remark`, `dep_id`) VALUES (1, '超级管理员', '系统最高权限', 1);
+INSERT INTO `system`.`sys_role`(`role_id`, `name`, `remark`, `dep_id`) VALUES (2, '总经理', 'CEO', 2);
+INSERT INTO `system`.`sys_role`(`role_id`, `name`, `remark`, `dep_id`) VALUES (3, '项目经理', '研发部一把手', 3);
+INSERT INTO `system`.`sys_role`(`role_id`, `name`, `remark`, `dep_id`) VALUES (4, '研发者', '最低级的码农', 4);
+INSERT INTO `system`.`sys_role`(`role_id`, `name`, `remark`, `dep_id`) VALUES (5, '人事', '招聘头头', 5);
+
+
+-- -----------------------------
+-- 部门表
+-- -----------------------------
+DROP TABLE IF EXISTS sys_dept;
+CREATE TABLE `sys_dept` (
+  `dep_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '部门ID',
+  `pid` bigint(20) NOT NULL DEFAULT '0' COMMENT '父级部门ID',
+  `name` varchar(100) NOT NULL COMMENT '部门名称',
+  PRIMARY KEY (`dep_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+
+-- -----------------------------
+-- 部门表初始数据
+-- -----------------------------
+INSERT INTO `system`.`sys_dept`(`dep_id`, `pid`, `name`) VALUES (1, 0, '长老会');
+INSERT INTO `system`.`sys_dept`(`dep_id`, `pid`, `name`) VALUES (2, 1, '经理部');
+INSERT INTO `system`.`sys_dept`(`dep_id`, `pid`, `name`) VALUES (3, 2, '项目部');
+INSERT INTO `system`.`sys_dept`(`dep_id`, `pid`, `name`) VALUES (4, 3, '研发部');
+INSERT INTO `system`.`sys_dept`(`dep_id`, `pid`, `name`) VALUES (5, 2, '人事部');

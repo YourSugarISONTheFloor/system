@@ -1,13 +1,20 @@
 package cn.fantuan.system.config;
 
+import cn.fantuan.system.core.shiro.MyFormAuthenticationFilter;
 import cn.fantuan.system.core.shiro.Realm;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
+import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -25,10 +32,17 @@ public class ShiroConfig {
 	 * Shiro的过滤器链
 	 */
 	@Bean
-	public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager defaultWebSecurityManager) {
+	public ShiroFilterFactoryBean getShiroFilterFactoryBean() {
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 		//给filter设置安全管理器
-		shiroFilterFactoryBean.setSecurityManager(defaultWebSecurityManager);
+		shiroFilterFactoryBean.setSecurityManager(getDefaultWebSecurityManager());
+
+		/**
+		 * 覆盖默认的user拦截器(默认拦截器解决不了ajax请求 session超时的问题,若有更好的办法请及时反馈作者)
+		 */
+		HashMap<String, Filter> myFilters = new HashMap<>();
+		myFilters.put("user", new MyFormAuthenticationFilter());
+		shiroFilterFactoryBean.setFilters(myFilters);
 
 		//添加Shiro内置过滤器
 		/**
@@ -53,16 +67,18 @@ public class ShiroConfig {
 		for (String nonePermissionRe : NONE_PERMISSION_RES) {
 			hashMap.put(nonePermissionRe, "anon");
 		}
+		hashMap.put("/aa/aa", "authc");
 		hashMap.put("/**", "user");
+
 
 		//配置系统受限资源
 		//配置系统公共资源
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(hashMap);
 
-		//默认认证界面路径
+		//默认为认证界面路径
 		shiroFilterFactoryBean.setLoginUrl("/login");
-		//登陆成功后跳转的url
-		shiroFilterFactoryBean.setSuccessUrl("/");
+//		//登陆成功后跳转的url
+//		shiroFilterFactoryBean.setSuccessUrl("/");
 		//没有权限跳转的url
 		shiroFilterFactoryBean.setUnauthorizedUrl("/error/404");
 
@@ -71,10 +87,12 @@ public class ShiroConfig {
 
 	//创建安全管理器
 	@Bean
-	public DefaultWebSecurityManager getDefaultWebSecurityManager(Realm realm) {
+	public DefaultWebSecurityManager getDefaultWebSecurityManager() {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 		//给安全管理器设置Realm
-		securityManager.setRealm(realm);
+		securityManager.setRealm(getRealm());
+		//设置缓存
+		securityManager.setCacheManager(getCacheShiroManager());
 		return securityManager;
 	}
 
@@ -84,14 +102,45 @@ public class ShiroConfig {
 	@Bean
 	public Realm getRealm() {
 		Realm realm = new Realm();
-		//修改凭证校验匹配器
-		HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-		//设置加密算法
-		hashedCredentialsMatcher.setHashAlgorithmName("MD5");
-		//设置散列次数
-		hashedCredentialsMatcher.setHashIterations(1024);
-		realm.setCredentialsMatcher(hashedCredentialsMatcher);
+//		//修改凭证校验匹配器
+//		HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+//		//设置加密算法
+//		hashedCredentialsMatcher.setHashAlgorithmName("MD5");
+//		//设置散列次数
+//		hashedCredentialsMatcher.setHashIterations(1024);
+//		realm.setCredentialsMatcher(hashedCredentialsMatcher);
 		return realm;
+	}
+
+	/**
+	 * 记住密码Cookie
+	 */
+	@Bean
+	public SimpleCookie rememberMeCookie() {
+		SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
+		simpleCookie.setHttpOnly(true);
+		simpleCookie.setMaxAge(7 * 24 * 60 * 60);//7天
+		return simpleCookie;
+	}
+
+	/**
+	 * 缓存管理器 使用Ehcache实现
+	 */
+	@Bean
+	public CacheManager getCacheShiroManager() {
+		EhCacheManager ehCacheManager = new EhCacheManager();
+		return ehCacheManager;
+	}
+
+	/**
+	 * 在方法中 注入 securityManager,进行代理控制
+	 */
+	@Bean
+	public MethodInvokingFactoryBean methodInvokingFactoryBean(DefaultWebSecurityManager securityManager) {
+		MethodInvokingFactoryBean bean = new MethodInvokingFactoryBean();
+		bean.setStaticMethod("org.apache.shiro.SecurityUtils.setSecurityManager");
+		bean.setArguments(securityManager);
+		return bean;
 	}
 
 	/**
@@ -102,6 +151,16 @@ public class ShiroConfig {
 	@Bean
 	public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
 		return new LifecycleBeanPostProcessor();
+	}
+
+	/**
+	 * 启用shrio授权注解拦截方式，AOP式方法级权限检查
+	 */
+	@Bean
+	public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(DefaultWebSecurityManager securityManager) {
+		AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+		authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+		return authorizationAttributeSourceAdvisor;
 	}
 
 }

@@ -1,6 +1,7 @@
 package cn.fantuan.system.modular.entities.outside;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -12,21 +13,18 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("sys_user")
-public class User implements Serializable {
+@TableName("sys_dept")
+public class Dept implements Serializable {
+	private static final long serialVersionUID = 1L;
+	//部门ID
 	@TableId(type = IdType.AUTO)
-	//用户主键ID
-	private Long id;
-	//电话
-	private Long phone;
-	//邮箱
-	private String email;
-	//密码
-	private String password;
-	//名字
-	private String name;
-	//状态
-	private Integer status;
-	//头像
-	private String avatar;
+	private Long deptId;
+
+	//父级部门ID
+	@TableField("pid")
+	private Long pid;
+
+	//部门名称
+	@TableField("dept_name")
+	private String deptName;
 }

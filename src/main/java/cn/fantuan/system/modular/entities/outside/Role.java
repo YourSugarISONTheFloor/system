@@ -7,26 +7,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("sys_user")
-public class User implements Serializable {
+@TableName("sys_role")
+public class Role {
+	//角色ID
 	@TableId(type = IdType.AUTO)
-	//用户主键ID
-	private Long id;
-	//电话
-	private Long phone;
-	//邮箱
-	private String email;
-	//密码
-	private String password;
-	//名字
+	private Long role_id;
+	//角色名称
 	private String name;
-	//状态
-	private Integer status;
-	//头像
-	private String avatar;
+	//角色描述
+	private String remark;
+	//部门ID
+	private Long dep_id;
 }

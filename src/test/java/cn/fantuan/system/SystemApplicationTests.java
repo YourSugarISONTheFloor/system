@@ -2,7 +2,9 @@ package cn.fantuan.system;
 
 import cn.fantuan.system.modular.entities.CommonResult;
 import cn.fantuan.system.modular.util.RedisUtil;
+import cn.fantuan.system.modular.util.code.CodeUtil;
 import cn.fantuan.system.modular.util.code.SuccessCode;
+import cn.fantuan.system.modular.util.core.ToolUtil;
 import lombok.SneakyThrows;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.junit.jupiter.api.Test;
@@ -18,7 +20,6 @@ class SystemApplicationTests {
 
 	@Test
 	void contextLoads() {
-
 		System.out.println(redisUtil);
 		String token = "";
 		//获取token的剩余时间
@@ -62,6 +63,13 @@ class SystemApplicationTests {
 		//带盐迭代加密
 		Md5Hash md5Hash2 = new Md5Hash(password, "你好", 2);
 		System.out.println("带盐迭代加密的结果：" + md5Hash2.toHex());
+	}
+
+	@Test
+	public void getRandomString() {
+		ToolUtil toolUtil = new ToolUtil();
+		String randomString = CodeUtil.getRandomString(5);
+		System.out.println("randomString = " + randomString);
 	}
 
 }

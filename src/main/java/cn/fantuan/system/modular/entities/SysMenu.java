@@ -32,4 +32,6 @@ public class SysMenu implements Serializable {
 	//@TableField指定表中的字段名
 	@TableField("isMenu")
 	private Boolean isMenu;
+	//权限名称
+	private String permission;
 }

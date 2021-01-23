@@ -178,6 +178,7 @@
 
         //获取用户信息
         MyMethod.getUser();
+        console.log(JSON.parse(localStorage.token))
         $('#user_name').text(JSON.parse(localStorage.user).name);
 
         //语言切换事件

@@ -7,7 +7,6 @@ import cn.fantuan.system.modular.util.code.ErrorCode;
 import cn.fantuan.system.modular.util.code.SuccessCode;
 import cn.fantuan.system.modular.util.email.SendEmailServlet;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -31,13 +30,13 @@ public class LoginController {
 	private static final String EMAIL = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
 	private static final String PATH = "/subsidiary/";
 	@Autowired
-	LoginService loginService;
+	private LoginService loginService;
 	//发送邮箱的处理器
 	@Autowired
-	SendEmailServlet sendEmailServlet;
+	private SendEmailServlet sendEmailServlet;
 	//获取验证码图片的处理器
 	@Autowired
-	CodeImg codeImg;
+	private CodeImg codeImg;
 
 	//验证码图片
 	@RequestMapping(value = "/codeImage", produces = MediaType.IMAGE_JPEG_VALUE)
@@ -127,9 +126,6 @@ public class LoginController {
 		} catch (IncorrectCredentialsException e) {
 			//密码错误
 			return new CommonResult(ErrorCode.ERROR_PASSWORD);
-		} catch (AuthenticationException e) {
-			e.printStackTrace();
-			return "";
 		}
 	}
 

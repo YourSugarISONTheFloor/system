@@ -3,18 +3,17 @@ package cn.fantuan.system.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 // 标注这个类是一个配置类
 @Configuration
 public class MyConfig implements WebMvcConfigurer {
-	//在拦截器配置类里面先实例化拦截器
-	@Bean
-	public LoginHandlerInterceptor getLoginHandlerInterceptor() {
-		return new LoginHandlerInterceptor();
-	}
+//	//在拦截器配置类里面先实例化拦截器
+//	@Bean
+//	public LoginHandlerInterceptor getLoginHandlerInterceptor() {
+//		return new LoginHandlerInterceptor();
+//	}
 
 	// 配置视图跳转
 	@Override
@@ -24,16 +23,16 @@ public class MyConfig implements WebMvcConfigurer {
 		registry.addViewController("/index.html").setViewName("index");
 	}
 
-	//注册拦截器的
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		//拦截请求addPathPatterns("/**")，拦截所有请求。
-		//排除拦截请求excludePathPatterns("/login","/log")
-		//springboot已经做好静态文件的映射，不用处理静态资源了
-		registry.addInterceptor(getLoginHandlerInterceptor())
-				.addPathPatterns("/**")
-				.excludePathPatterns("/login", "/logging", "/codeImage", "/forgetPassword", "/registered", "/forgetPassword/**", "/registered/**", "/styles/**", "/error/**");
-	}
+//	//注册拦截器的
+//	@Override
+//	public void addInterceptors(InterceptorRegistry registry) {
+//		//拦截请求addPathPatterns("/**")，拦截所有请求。
+//		//排除拦截请求excludePathPatterns("/login","/log")
+//		//springboot已经做好静态文件的映射，不用处理静态资源了
+//		registry.addInterceptor(getLoginHandlerInterceptor())
+//				.addPathPatterns("/**")
+//				.excludePathPatterns("/login", "/logging", "/codeImage", "/forgetPassword", "/registered", "/forgetPassword/**", "/registered/**", "/styles/**", "/error/**");
+//	}
 
 
 	// 将本地化解析器配置到容器中
