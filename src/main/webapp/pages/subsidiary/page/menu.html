@@ -29,7 +29,7 @@
 <!-- 状态列 -->
 <script type="text/html" id="status">
     <input type="checkbox" name="status" value="{{d.id}}" lay-skin="switch" lay-text="禁用|激活" lay-filter="state" {{
-           d.status== 1 ? 'checked' : '' }}>
+           d.status== 1 ? 'checked' : ''}}>
 </script>
 
 <!-- 操作列 -->
@@ -42,7 +42,7 @@
 <script th:src="@{/styles/js/lay-config.js?v=1.0.4}" charset="utf-8"></script>
 <script th:src="@{/styles/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
 <!--导入自定义的一些公共方法-->
-<script th:src="@{/styles/js/my_function.js}"></script>
-<script th:src="@{/styles/js/page/menu.js}" charset="utf-8"></script>
+<script th:src="@{/accest/my_function.js}"></script>
+<script th:src="@{/accest/subsidiary/menu/menu.js}" charset="utf-8"></script>
 </body>
 </html>

@@ -3,14 +3,15 @@ package cn.fantuan.system.modular.service.impl;
 import cn.fantuan.system.modular.entities.CommonResult;
 import cn.fantuan.system.modular.entities.outside.User;
 import cn.fantuan.system.modular.mapper.LoginMapper;
-import cn.fantuan.system.modular.util.code.ErrorCode;
-import cn.fantuan.system.modular.util.code.SuccessCode;
 import cn.fantuan.system.modular.service.LoginService;
 import cn.fantuan.system.modular.util.RedisUtil;
 import cn.fantuan.system.modular.util.code.CodeUtil;
+import cn.fantuan.system.modular.util.code.ErrorCode;
+import cn.fantuan.system.modular.util.code.SuccessCode;
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
@@ -55,8 +56,10 @@ public class LoginServiceImpl extends ServiceImpl<LoginMapper, User> implements 
 //				HttpServletResponse response = null;
 //				response.addCookie(cookie);
 
-				//添加指定token
+				//添加指定token到redis1号库中
+				redisUtil.select(1);
 				redisUtil.set(token, user, 10 * 24 * 60L);
+				redisUtil.select(0);
 				return new CommonResult(SuccessCode.SUCCESS, token);
 			} else {
 				return new CommonResult(ErrorCode.ERROR_PASSWORD);
@@ -117,14 +120,23 @@ public class LoginServiceImpl extends ServiceImpl<LoginMapper, User> implements 
 	//退出登录
 	@Override
 	public Object logout(String token) {
-		boolean del = redisUtil.del(token);
-		return new CommonResult(SuccessCode.SUCCESS, del);
+		if (!token.equals("")) {
+			redisUtil.select(1);
+			redisUtil.del(token);
+			redisUtil.select(0);
+		}
+		SecurityUtils.getSubject().logout();
+		return new CommonResult(SuccessCode.SUCCESS, true);
 	}
 
 	//获取用户信息
 	@Override
 	public Object look(String token) {
+		//切换到1号库查询用户信息
+		redisUtil.select(1);
 		Object object = redisUtil.get(token);
+		//切换回0号库
+		redisUtil.select(0);
 		return new CommonResult(SuccessCode.SUCCESS, object);
 	}
 }

@@ -71,14 +71,14 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item layuimini-setting">
-                    <a id="user_name" href="javascript:;"></a>
+                    <a id="user_name" href="javascript:;"></a></span>
                     <dl class="layui-nav-child">
                         <dd>
                             <a href="javascript:;" layuimini-content-href="page/user-setting.html" data-title="基本资料"
-                               data-icon="fa fa-gears">基本资料<span class="layui-badge-dot"></span></a>
+                               data-icon="fa fa-gears">代办事项<span class="layui-badge-dot"></span></a>
                         </dd>
                         <dd>
-                            <a href="javascript:;" layuimini-content-href="page/user-password.html" data-title="修改密码"
+                            <a href="javascript:;" layuimini-content-href="forgetPassword" data-title="修改密码"
                                data-icon="fa fa-gears">修改密码</a>
                         </dd>
                         <dd>
@@ -144,7 +144,7 @@
 <script th:src="@{/styles/js/lay-config.js?v=2.0.0}" charset="utf-8"></script>
 <script th:src="@{/styles/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
 <!--引入自定以的方法-->
-<script th:src="@{/styles/js/my_function.js}"></script>
+<script th:src="@{/accest/my_function.js}" charset="utf-8"></script>
 
 <script>
     layui.use(['jquery', 'layer', 'miniAdmin', 'miniTongji'], function () {
@@ -178,8 +178,8 @@
 
         //获取用户信息
         MyMethod.getUser();
-        console.log(JSON.parse(localStorage.token))
-        $('#user_name').text(JSON.parse(localStorage.user).name);
+        console.log(localStorage.user)
+        $('#user_name').text(localStorage.user == undefined ? "临时用户" : JSON.parse(localStorage.user).name);
 
         //语言切换事件
         $('.language dd').on('click', function () {
@@ -195,7 +195,11 @@
         })
 
         $('.login-out').on("click", function () {
-            layer.msg('退出登录成功', function () {
+            layer.msg('退出登录成功', {icon: 1, time: 3 * 1000, shift: 6}, function () {
+                //清空用户在浏览器中的缓存
+                MyMethod.removeCookie("token");
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
                 MyMethod.language('/logout')
             });
         });

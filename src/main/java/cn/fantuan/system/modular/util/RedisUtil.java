@@ -42,7 +42,6 @@ public class RedisUtil {
 			//在lettuceConnectionFactory.resetConnection();后加上lettuceConnectionFactory.afterPropertiesSet();切换才能生效
 			//注意：上面这种存在并发安全问题。假如多个线程同时进行切库操作，由于用的是同一个LettuceConnectionFactory，LettuceConnectionFactory的参数会被最新一次设置覆盖。
 		}
-		System.out.println("当前操作的缓存库：" + lettuceConnectionFactory.getDatabase());
 	}
 
 	/**
@@ -592,5 +591,16 @@ public class RedisUtil {
 			e.printStackTrace();
 			return 0;
 		}
+	}
+
+	/**
+	 * 添加 ZSet 元素
+	 *
+	 * @param key
+	 * @param value
+	 * @param score
+	 */
+	public boolean addStr(String key, Object value, double score) {
+		return redisTemplate.opsForZSet().add(key, (String) value, score);
 	}
 }

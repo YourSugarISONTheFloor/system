@@ -1,11 +1,14 @@
 package cn.fantuan.system.modular.controller.basics;
 
+import cn.fantuan.system.core.shiro.ShiroUser;
 import cn.fantuan.system.modular.entities.CommonResult;
 import cn.fantuan.system.modular.service.LoginService;
+import cn.fantuan.system.modular.util.RedisUtil;
 import cn.fantuan.system.modular.util.code.CodeImg;
 import cn.fantuan.system.modular.util.code.ErrorCode;
 import cn.fantuan.system.modular.util.code.SuccessCode;
 import cn.fantuan.system.modular.util.email.SendEmailServlet;
+import cn.hutool.core.util.IdUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -15,12 +18,12 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -29,6 +32,9 @@ import java.io.IOException;
 public class LoginController {
 	private static final String EMAIL = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
 	private static final String PATH = "/subsidiary/";
+
+	@Autowired
+	private RedisUtil redisUtil;
 	@Autowired
 	private LoginService loginService;
 	//发送邮箱的处理器
@@ -86,7 +92,7 @@ public class LoginController {
 	//根据用户输入的用户名或密码进行查询
 	@PostMapping("/logging")
 	@ResponseBody
-	public Object logging(String username, String password, String clod, String choice, HttpSession session, Model model) {
+	public Object logging(String username, String password, String clod, String choice, HttpSession session, HttpServletRequest request) {
 		//choice为on代表选中保持登录
 		//choice为null代表未选中保持登录
 
@@ -97,7 +103,6 @@ public class LoginController {
 				return new CommonResult(ErrorCode.CAPTCHA_ERROR);
 			}
 		}
-//		return loginService.getUserTo(username,password);
 
 		//使用Shiro编写认证操作
 		//获取Subject
@@ -105,8 +110,6 @@ public class LoginController {
 
 		//封装用户数据
 		AuthenticationToken token = new UsernamePasswordToken(username, password);
-
-		System.out.println("choice = " + choice);
 		//如果开启了记住我功能
 		if ("on".equals(choice)) {
 			((UsernamePasswordToken) token).setRememberMe(true);
@@ -116,10 +119,27 @@ public class LoginController {
 
 		//执行登录操作
 		try {
+			Cookie[] cookies = request.getCookies();
+			if (cookies != null && cookies.length > 0) {
+				for (Cookie cookie : cookies) {
+					if (cookie.getName().equals("token")) {
+						redisUtil.select(1);
+						redisUtil.del(cookie.getValue());
+						redisUtil.select(0);
+					}
+				}
+			}
 			//login()方法没有返回值，只能通过异常判断是否登陆成功
 			subject.login(token);
+			//添加指定token到redis1号库中
+			redisUtil.select(1);
+			String LoginToken = IdUtil.simpleUUID();
+			ShiroUser shiroUser = (ShiroUser) subject.getPrincipals().getPrimaryPrincipal();
+			//存储用户登录的token为期10天
+			redisUtil.set(LoginToken, shiroUser, 10 * 24 * 60L);
+			redisUtil.select(0);
 			//登陆成功
-			return new CommonResult(SuccessCode.SUCCESS, token);
+			return new CommonResult(SuccessCode.SUCCESS, LoginToken);
 		} catch (UnknownAccountException e) {
 			//账号不存在
 			return new CommonResult(ErrorCode.NO_THIS_USER);

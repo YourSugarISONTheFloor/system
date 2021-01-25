@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
@@ -28,7 +29,17 @@ public class IndexController {
 	//退出登录
 	@RequestMapping("/logout")
 	public String logout(HttpServletRequest request) {
-		loginService.logout(String.valueOf(request.getHeaders("token")));
+		String token = "";
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null && cookies.length > 0) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("token")) {
+					token = cookie.getValue();
+				}
+			}
+		}
+//		request.getCookies().getName().equals("token");
+		loginService.logout(token);
 		//redirect重定向:参数会丢失
 		//Forward转发：参数不会丢失
 		return "forward:/login";

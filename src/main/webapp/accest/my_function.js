@@ -12,10 +12,30 @@ function ajax_hasData(url, type, data, success, dataType, async) {
         data: data,
         dataType: dataType,
         headers: {"token": localStorage.token},
+        // beforeSend: function () {
+        //     //请求前的处理
+        //     console.log("ajax请求前")
+        //     layer.loading(1);
+        // },
+        //请求成功时处理
         success: success,
+        //请求出错处理
         error: function (xhr) {
-            layer.msg("发生错误了：" + xhr.status, {icon: 2, time: 3 * 1000, shift: 6});
-        }
+            var sessionStatus = xhr.getResponseHeader('sessionstatus');
+            if (sessionStatus == 'timeout') {
+                layer.msg("登录已失效，请重新登录！", {icon: 2, time: 3 * 1000, shift: 6});
+                setTimeout(function () {
+                    MyMethod.language('/login');
+                }, 2000);
+            } else {
+                layer.msg("发生错误了：" + xhr.status, {icon: 2, time: 3 * 1000, shift: 6});
+            }
+        },
+        // complete: function () {
+        //     //请求完成的处理
+        //     console.log("ajax请求完成")
+        //     layer.closeAll();
+        // }
     });
 }
 
@@ -26,13 +46,15 @@ var MyMethod = {
         ajax_hasData('/user', null, null, function (rest) {
             //可以将任意的JavaScript值序列化成JSON字符串形式,存储在本地
             localStorage.user = JSON.stringify(rest.data);
+            // $('#user_name').text(localStorage.user == undefined ? "临时用户" : JSON.parse(localStorage.user).name);
             //JSON.parse(localStorage.user)将JSON字符串转为对象
             //console.log(JSON.parse(localStorage.user).name)
-        })
+        }, null, false)
     },
     //携带语言的路径
     language: function (url) {
-        console.log(sessionStorage.language)
+        //获取浏览器存储的语言
+        console.log("浏览器存储的语言：" + sessionStorage.language)
         if (sessionStorage.language === undefined) {
             window.location.href = url;
         } else {

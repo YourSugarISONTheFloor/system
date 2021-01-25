@@ -6,83 +6,59 @@ import cn.fantuan.system.core.shiro.service.UserAuthService;
 import cn.fantuan.system.modular.entities.outside.User;
 import cn.fantuan.system.modular.service.LoginService;
 import cn.fantuan.system.modular.util.code.ManagerStatus;
-import cn.hutool.core.convert.Convert;
-import org.apache.commons.collections.functors.ConstantFactory;
 import org.apache.shiro.authc.CredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.crypto.hash.Md5Hash;
-import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@DependsOn("springContextHolder")
-@Transactional(readOnly = true)
 public class UserAuthServiceServiceImpl implements UserAuthService {
 	@Autowired
 	private LoginService loginService;
 
-    @Override
-    public User user(String account) {
+	@Override
+	public User user(String account) {
 
-        User user = loginService.getUser(account);
+		User user = loginService.getUser(account);
 
-        // 账号不存在
-        if (null == user) {
-            throw new CredentialsException();
-        }
-        // 账号被冻结
-        if (!user.getStatus().equals(ManagerStatus.OK.getCode())) {
-            throw new LockedAccountException();
-        }
-        return user;
-    }
+		// 账号不存在
+		if (null == user) {
+			throw new CredentialsException();
+		}
+		// 账号被冻结
+		if (user.getStatus() != ManagerStatus.OK.getCode()) {
+			throw new LockedAccountException();
+		}
+		return user;
+	}
 
-    @Override
-    public ShiroUser shiroUser(User user) {
+	/**
+	 * 根据系统用户获取Shiro的用户
+	 *
+	 * @param user 系统用户
+	 */
+	@Override
+	public ShiroUser shiroUser(User user) {
 
-        ShiroUser shiroUser = ShiroKit.createShiroUser(user);
+		ShiroUser shiroUser = ShiroKit.createShiroUser(user);
+		return shiroUser;
+	}
 
-        //用户角色数组
-        Long[] roleArray = Convert.toLongArray(user.getRoleId());
+	@Override
+	public List<String> findPermissionsByRoleId(Long roleId) {
+		return null;
+	}
 
-        //获取用户角色列表
-        List<Long> roleList = new ArrayList<>();
-        List<String> roleNameList = new ArrayList<>();
-        for (Long roleId : roleArray) {
-            roleList.add(roleId);
-            roleNameList.add(ConstantFactory.me().getSingleRoleName(roleId));
-        }
-        shiroUser.setRoleList(roleList);
-        shiroUser.setRoleNames(roleNameList);
+	@Override
+	public String findRoleNameByRoleId(Long roleId) {
+		return null;
+	}
 
-        return shiroUser;
-    }
-
-    @Override
-    public List<String> findPermissionsByRoleId(Long roleId) {
-        return menuMapper.getResUrlsByRoleId(roleId);
-    }
-
-    @Override
-    public String findRoleNameByRoleId(Long roleId) {
-        return ConstantFactory.me().getSingleRoleTip(roleId);
-    }
-
-    @Override
-    public SimpleAuthenticationInfo info(ShiroUser shiroUser, User user, String realmName) {
-        String credentials = user.getPassword();
-
-        // 密码加盐处理
-        String source = user.getSalt();
-        ByteSource credentialsSalt = new Md5Hash(source);
-        return new SimpleAuthenticationInfo(shiroUser, credentials, credentialsSalt, realmName);
-    }
-
+	@Override
+	public SimpleAuthenticationInfo info(ShiroUser shiroUser, User user, String realmName) {
+		return null;
+	}
 }

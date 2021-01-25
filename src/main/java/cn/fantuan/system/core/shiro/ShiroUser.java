@@ -26,9 +26,8 @@ public class ShiroUser implements Serializable {
 	private Long deptId;
 	//角色集
 	private List<Long> roleList;
-	//部门名称
-	private String deptName;
 	//角色名称集
 	private List<String> roleNames;
-
+	//部门名称
+	private String deptName;
 }

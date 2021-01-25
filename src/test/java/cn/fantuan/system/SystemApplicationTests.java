@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootTest
 class SystemApplicationTests {
@@ -70,6 +72,17 @@ class SystemApplicationTests {
 		ToolUtil toolUtil = new ToolUtil();
 		String randomString = CodeUtil.getRandomString(5);
 		System.out.println("randomString = " + randomString);
+	}
+
+	@Test
+	public void testRedis(){
+		redisUtil.set("aa","bb");
+		Map<String,Object> map=new HashMap<>();
+		map.put("aaa","bb");
+		map.put("aa","bb");
+		map.put("aaaa","bb");
+		map.put("a","bb");
+		redisUtil.hmset("bb",map);
 	}
 
 }

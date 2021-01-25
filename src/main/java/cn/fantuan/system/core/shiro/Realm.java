@@ -2,7 +2,6 @@ package cn.fantuan.system.core.shiro;
 
 import cn.fantuan.system.core.shiro.service.UserAuthService;
 import cn.fantuan.system.modular.entities.outside.User;
-import cn.fantuan.system.modular.service.LoginService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -18,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 自定义Realm类，在该类中可以声明自定义的登录认证和授权的方法
  */
 public class Realm extends AuthorizingRealm {
-	@Autowired
-	private LoginService loginService;
 
 	@Autowired
 	private UserAuthService userAuthService;
@@ -50,12 +47,11 @@ public class Realm extends AuthorizingRealm {
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
 		//编写Shiro判断用户是否可以登录
-		System.out.println("doGetAuthenticationInfo:自定义的登录认证逻辑开始");
 		//获取前端传递的数据
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
 		//获取用户信息
-		User user = loginService.getUser(token.getUsername());
+		User user = userAuthService.user(token.getUsername());
 		ShiroUser shiroUser = userAuthService.shiroUser(user);
-		return new SimpleAuthenticationInfo(shiroUser, user, super.getName());
+		return new SimpleAuthenticationInfo(shiroUser, user.getPassword(), super.getName());
 	}
 }

@@ -26,12 +26,12 @@ import lombok.Getter;
 @Getter
 public enum ManagerStatus {
 
-    OK("ENABLE", "启用"), FREEZED("LOCKED", "冻结"), DELETED("DELETED", "被删除");
+    OK(0, "启用"), FREEZED(1, "禁用"), DELETED(2, "冻结");
 
-    String code;
+    Integer code;
     String message;
 
-    ManagerStatus(String code, String message) {
+    ManagerStatus(Integer code, String message) {
         this.code = code;
         this.message = message;
     }
