@@ -1,5 +1,6 @@
 package cn.fantuan.system.core.shiro.service.impl;
 
+import cn.fantuan.system.modular.util.SpringContextHolder;
 import cn.fantuan.system.core.shiro.ShiroKit;
 import cn.fantuan.system.core.shiro.ShiroUser;
 import cn.fantuan.system.core.shiro.service.UserAuthService;
@@ -18,6 +19,10 @@ import java.util.List;
 public class UserAuthServiceServiceImpl implements UserAuthService {
 	@Autowired
 	private LoginService loginService;
+
+	public static UserAuthService me() {
+		return SpringContextHolder.getBean(UserAuthService.class);
+	}
 
 	@Override
 	public User user(String account) {
@@ -47,10 +52,16 @@ public class UserAuthServiceServiceImpl implements UserAuthService {
 		return shiroUser;
 	}
 
+	/**
+	 * 获取权限列表通过角色id
+	 *
+	 * @param roleId 角色id
+	 */
 	@Override
 	public List<String> findPermissionsByRoleId(Long roleId) {
 		return null;
 	}
+
 
 	@Override
 	public String findRoleNameByRoleId(Long roleId) {

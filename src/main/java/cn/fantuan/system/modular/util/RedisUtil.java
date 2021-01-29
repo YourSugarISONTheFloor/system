@@ -19,9 +19,6 @@ public class RedisUtil {
 	@Qualifier("redisTemplate")
 	private RedisTemplate redisTemplate;
 
-	public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
-		this.redisTemplate = redisTemplate;
-	}
 
 	//=============================common============================
 
@@ -210,6 +207,7 @@ public class RedisUtil {
 	 * @return 对应的多个键值
 	 */
 	public Map<Object, Object> hmget(String key) {
+		System.out.println(key);
 		return redisTemplate.opsForHash().entries(key);
 	}
 

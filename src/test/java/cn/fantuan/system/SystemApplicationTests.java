@@ -1,5 +1,6 @@
 package cn.fantuan.system;
 
+import cn.fantuan.system.core.common.constant.RedisConst;
 import cn.fantuan.system.modular.entities.CommonResult;
 import cn.fantuan.system.modular.util.RedisUtil;
 import cn.fantuan.system.modular.util.code.CodeUtil;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
 
 @SpringBootTest
@@ -72,17 +72,15 @@ class SystemApplicationTests {
 		ToolUtil toolUtil = new ToolUtil();
 		String randomString = CodeUtil.getRandomString(5);
 		System.out.println("randomString = " + randomString);
+		redisUtil.set("randomString", randomString);
 	}
 
 	@Test
-	public void testRedis(){
-		redisUtil.set("aa","bb");
-		Map<String,Object> map=new HashMap<>();
-		map.put("aaa","bb");
-		map.put("aa","bb");
-		map.put("aaaa","bb");
-		map.put("a","bb");
-		redisUtil.hmset("bb",map);
+	public void testRedis() {
+		System.out.println(redisUtil.get("randomString"));
+		Map<Object, Object> map = redisUtil.hmget(RedisConst.dept + 1);
+		System.out.println("map:" + map);
+		System.out.println(map.get("aaa"));
 	}
 
 }

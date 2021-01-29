@@ -7,7 +7,6 @@ import java.util.List;
 
 @Data
 public class ShiroUser implements Serializable {
-	private static final long serialVersionUID = 1L;
 	//用户主键ID
 	private Long id;
 	//电话

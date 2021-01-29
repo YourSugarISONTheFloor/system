@@ -58,6 +58,8 @@ public class MyFormAuthenticationFilter extends AccessControlFilter {
 		if (httpServletRequest.getHeader("x-requested-with") != null
 				&& httpServletRequest.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) {
 			httpServletResponse.setHeader("sessionstatus", "timeout");
+			//设置提示信息
+			httpServletResponse.setHeader("msg", ErrorCode.TOKEN_EXPIRED.getMessage());
 			return false;
 		} else {
 			//未登录，返回登录页面

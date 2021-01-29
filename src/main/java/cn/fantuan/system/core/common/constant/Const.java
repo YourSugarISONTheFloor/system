@@ -4,6 +4,9 @@ import cn.hutool.core.collection.CollectionUtil;
 
 import java.util.List;
 
+/**
+ * 系统常量
+ */
 public interface Const {
 	/**
 	 * 不需要权限验证的资源表达式

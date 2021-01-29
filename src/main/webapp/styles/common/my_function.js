@@ -22,8 +22,9 @@ function ajax_hasData(url, type, data, success, dataType, async) {
         //请求出错处理
         error: function (xhr) {
             var sessionStatus = xhr.getResponseHeader('sessionstatus');
+            var msg = xhr.getResponseHeader('msg');
             if (sessionStatus == 'timeout') {
-                layer.msg("登录已失效，请重新登录！", {icon: 2, time: 3 * 1000, shift: 6});
+                layer.msg(msg, {icon: 2, time: 3 * 1000, shift: 6});
                 setTimeout(function () {
                     MyMethod.language('/login');
                 }, 2000);
