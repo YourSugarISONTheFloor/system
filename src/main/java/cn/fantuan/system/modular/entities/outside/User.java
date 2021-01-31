@@ -26,6 +26,7 @@ public class User implements Serializable {
 	//名字
 	private String name;
 	//状态
+	//MySQL里有四个常量：true,false,TRUE,FALSE,它们分别代表1,0,1,0
 	private Integer status;
 	//头像
 	private String avatar;

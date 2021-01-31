@@ -35,9 +35,11 @@ public class ShiroKit {
 		shiroUser.setStatus(user.getStatus());
 		shiroUser.setAvatar(user.getAvatar());
 		//获取用户部门信息
-		Map<Object, Object> map = redisUtil.hmget(RedisConst.dept + user.getId());
-		System.out.println("map:" + map);
-		shiroUser.setDeptId((Long) map.get("deptID"));
+		Map<String, Object> map = redisUtil.hmget(RedisConst.dept + user.getId());
+//		System.out.println("map:" + map);
+//		System.out.println(map.get("deptID").getClass().getName());
+//		System.out.println(Long.valueOf(map.get("deptID").toString()).getClass().getName());
+		shiroUser.setDeptId(Long.valueOf(map.get("deptID").toString()));
 		shiroUser.setDeptName(map.get("deptName") == null ? "" : map.get("deptName").toString());
 		shiroUser.setRoleList((List<Long>) map.get("roleList"));
 		shiroUser.setRoleNames((List<String>) map.get("roleNames"));

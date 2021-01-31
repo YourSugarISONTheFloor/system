@@ -11,7 +11,9 @@ import cn.fantuan.system.modular.util.email.SendEmailServlet;
 import cn.hutool.core.util.IdUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -146,6 +148,12 @@ public class LoginController {
 		} catch (IncorrectCredentialsException e) {
 			//密码错误
 			return new CommonResult(ErrorCode.ERROR_PASSWORD);
+		} catch (LockedAccountException e) {
+			//账号被冻结
+			return new CommonResult(ErrorCode.ACCOUNT_FREEZED);
+		} catch (DisabledAccountException e) {
+			//账号被禁用
+			return new CommonResult(ErrorCode.ACCOUNT_DISABLE);
 		}
 	}
 

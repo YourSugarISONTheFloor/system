@@ -1,4 +1,4 @@
-layui.use(['tree', 'util'], function () {
+layui.use(['tree'], function () {
     var tree = layui.tree,
         data = "";
 

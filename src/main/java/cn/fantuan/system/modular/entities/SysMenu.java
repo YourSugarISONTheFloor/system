@@ -27,6 +27,7 @@ public class SysMenu implements Serializable {
 	//菜单排序
 	private Integer sort;
 	//状态(0:禁用,1:启用)
+	//MySQL里有四个常量：true,false,TRUE,FALSE,它们分别代表1,0,1,0
 	private Boolean status;
 	//是否为菜单
 	//@TableField指定表中的字段名

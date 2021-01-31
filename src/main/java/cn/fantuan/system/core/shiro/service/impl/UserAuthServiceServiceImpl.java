@@ -1,15 +1,16 @@
 package cn.fantuan.system.core.shiro.service.impl;
 
-import cn.fantuan.system.modular.util.SpringContextHolder;
 import cn.fantuan.system.core.shiro.ShiroKit;
 import cn.fantuan.system.core.shiro.ShiroUser;
 import cn.fantuan.system.core.shiro.service.UserAuthService;
 import cn.fantuan.system.modular.entities.outside.User;
 import cn.fantuan.system.modular.service.LoginService;
+import cn.fantuan.system.modular.util.SpringContextHolder;
 import cn.fantuan.system.modular.util.code.ManagerStatus;
-import org.apache.shiro.authc.CredentialsException;
+import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,11 +32,15 @@ public class UserAuthServiceServiceImpl implements UserAuthService {
 
 		// 账号不存在
 		if (null == user) {
-			throw new CredentialsException();
+			throw new UnknownAccountException("用户不存在");
 		}
 		// 账号被冻结
-		if (user.getStatus() != ManagerStatus.OK.getCode()) {
-			throw new LockedAccountException();
+		if (user.getStatus() == ManagerStatus.DELETED.getCode()) {
+			throw new LockedAccountException("账号被冻结");
+		}
+		// 账号被冻结
+		if (user.getStatus() == ManagerStatus.FREEZED.getCode()) {
+			throw new DisabledAccountException("账号被禁用");
 		}
 		return user;
 	}

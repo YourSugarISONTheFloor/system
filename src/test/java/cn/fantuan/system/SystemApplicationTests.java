@@ -3,9 +3,7 @@ package cn.fantuan.system;
 import cn.fantuan.system.core.common.constant.RedisConst;
 import cn.fantuan.system.modular.entities.CommonResult;
 import cn.fantuan.system.modular.util.RedisUtil;
-import cn.fantuan.system.modular.util.code.CodeUtil;
 import cn.fantuan.system.modular.util.code.SuccessCode;
-import cn.fantuan.system.modular.util.core.ToolUtil;
 import lombok.SneakyThrows;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.junit.jupiter.api.Test;
@@ -13,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SpringBootTest
@@ -67,18 +68,29 @@ class SystemApplicationTests {
 		System.out.println("带盐迭代加密的结果：" + md5Hash2.toHex());
 	}
 
+	//测试向缓存中添加dept:用户ID，对应的数据
 	@Test
 	public void getRandomString() {
-		ToolUtil toolUtil = new ToolUtil();
-		String randomString = CodeUtil.getRandomString(5);
-		System.out.println("randomString = " + randomString);
-		redisUtil.set("randomString", randomString);
+		Map<String, Object> map = new HashMap<>();
+		map.put("deptID", 1);
+		map.put("deptName", "长老会");
+		List list = new ArrayList();
+		list.add(1L);
+		list.add(2L);
+		list.add(3L);
+		map.put("roleList", list);
+		List list1 = new ArrayList();
+		list1.add("超级管理员");
+		list1.add("总经理");
+		list1.add("项目经理");
+		map.put("roleNames", list1);
+		redisUtil.hmset(RedisConst.dept + 1, map);
+
 	}
 
 	@Test
 	public void testRedis() {
-		System.out.println(redisUtil.get("randomString"));
-		Map<Object, Object> map = redisUtil.hmget(RedisConst.dept + 1);
+		Map<String, Object> map = redisUtil.hmget(RedisConst.dept + 1);
 		System.out.println("map:" + map);
 		System.out.println(map.get("aaa"));
 	}

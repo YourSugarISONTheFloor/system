@@ -10,6 +10,7 @@ public enum ErrorCode {
 	USER_NOT_REG(401, "该用户还没住进灰姑凉家里呢"),
 	USER_ALREADY_REG(401, "该用户已经在灰姑凉家里了"),
 	ACCOUNT_FREEZED(401, "账号被冻结"),
+	ACCOUNT_DISABLE(401, "账号被禁用"),
 	ERROR_PASSWORD(402, "密码错误"),
 	//token异常
 	TOKEN_EXPIRED(700, "token过期"),
