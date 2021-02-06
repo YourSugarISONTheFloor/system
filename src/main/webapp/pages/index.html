@@ -153,8 +153,14 @@
             miniAdmin = layui.miniAdmin,
             miniTongji = layui.miniTongji;
 
+        //获取用户信息
+        MyMethod.getUser();
+        var user = localStorage.user == "null" ? MyMethod.language('/logout') : JSON.parse(localStorage.user);
+        // $('#user_name').text(localStorage.user == undefined ? "临时用户" : JSON.parse(localStorage.user).name);
+        $('#user_name').text(user.name);
+
         var options = {
-            iniUrl: "/menu",    // 初始化接口
+            iniUrl: '/menu?id=' + user.id,    // 初始化接口
             clearUrl: "styles/api/clear.json", // 缓存清理接口
             urlHashLocation: true,      // 是否打开hash定位
             bgColorDefault: false,      // 主题默认配置
@@ -176,10 +182,6 @@
             ],
         });
 
-        //获取用户信息
-        MyMethod.getUser();
-        // $('#user_name').text(localStorage.user == undefined ? "临时用户" : JSON.parse(localStorage.user).name);
-        $('#user_name').text(localStorage.user == "null" ? "临时用户" : JSON.parse(localStorage.user).name);
 
         //语言切换事件
         $('.language dd').on('click', function () {

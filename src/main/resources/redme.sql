@@ -39,6 +39,7 @@ CREATE TABLE `sys_user` (
   `email` varchar(100)  DEFAULT '' COMMENT '邮箱',
   `password` varchar(100) NOT NULL DEFAULT '' COMMENT '密码',
   `name` varchar(100) NOT NULL DEFAULT '' COMMENT '用户名称',
+  `deptId` int COMMENT '部门ID',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户状态（0：正常(默认值)，1：禁用，2：锁定',
   `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
   PRIMARY KEY (`id`)
@@ -61,7 +62,6 @@ CREATE TABLE `sys_role` (
   `role_id` bigint(20) NOT NULL COMMENT '角色id',
   `name` varchar(100) DEFAULT NULL COMMENT '角色名称',
   `remark` varchar(100) DEFAULT NULL COMMENT '角色描述',
-  `dep_id` bigint(20) DEFAULT NULL COMMENT '部门ID',
   PRIMARY KEY (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色表';
 
@@ -80,7 +80,7 @@ INSERT INTO `system`.`sys_role`(`role_id`, `name`, `remark`, `dep_id`) VALUES (5
 -- -----------------------------
 DROP TABLE IF EXISTS sys_dept;
 CREATE TABLE `sys_dept` (
-  `dep_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '部门ID',
+  `dept_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '部门ID',
   `pid` bigint(20) NOT NULL DEFAULT '0' COMMENT '父级部门ID',
   `name` varchar(100) NOT NULL COMMENT '部门名称',
   PRIMARY KEY (`dep_id`)
@@ -90,8 +90,8 @@ CREATE TABLE `sys_dept` (
 -- -----------------------------
 -- 部门表初始数据
 -- -----------------------------
-INSERT INTO `system`.`sys_dept`(`dep_id`, `pid`, `name`) VALUES (1, 0, '长老会');
-INSERT INTO `system`.`sys_dept`(`dep_id`, `pid`, `name`) VALUES (2, 1, '经理部');
-INSERT INTO `system`.`sys_dept`(`dep_id`, `pid`, `name`) VALUES (3, 2, '项目部');
-INSERT INTO `system`.`sys_dept`(`dep_id`, `pid`, `name`) VALUES (4, 3, '研发部');
-INSERT INTO `system`.`sys_dept`(`dep_id`, `pid`, `name`) VALUES (5, 2, '人事部');
+INSERT INTO `system`.`sys_dept`(`dept_id`, `pid`, `name`) VALUES (1, 0, '长老会');
+INSERT INTO `system`.`sys_dept`(`dept_id`, `pid`, `name`) VALUES (2, 1, '经理部');
+INSERT INTO `system`.`sys_dept`(`dept_id`, `pid`, `name`) VALUES (3, 2, '项目部');
+INSERT INTO `system`.`sys_dept`(`dept_id`, `pid`, `name`) VALUES (4, 3, '研发部');
+INSERT INTO `system`.`sys_dept`(`dept_id`, `pid`, `name`) VALUES (5, 2, '人事部');

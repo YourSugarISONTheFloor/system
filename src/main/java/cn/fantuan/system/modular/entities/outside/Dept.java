@@ -25,6 +25,6 @@ public class Dept implements Serializable {
 	private Long pid;
 
 	//部门名称
-	@TableField("dept_name")
+	@TableField("name")
 	private String deptName;
 }

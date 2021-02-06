@@ -4,13 +4,31 @@
     <meta charset="UTF-8">
     <title>权限管理</title>
     <link rel="stylesheet" th:href="@{/styles/lib/layui-v2.5.5/css/layui.css}" media="all">
+    <style>
+        .layui-tree-txt {
+            color: #FFFFFF !important;
+        }
+
+        .layui-tree-icon .layui-icon {
+            color: #FFB800 !important;
+        }
+
+        .layui-tree-icon {
+            border: 1px solid #FFB800 !important;;
+        }
+
+        .layui-tree-iconClick {
+            color: #FFFFFF !important;
+        }
+
+    </style>
 </head>
 <body>
 
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-sm12 layui-col-md3 layui-col-lg2">
-            <div class="layui-card">
+            <div class="layui-card" style="background-color: #01AAED;color: #FFFFFF">
                 <div class="layui-card-body mini-bar">
                     <div class="ztree" id="deptTree"></div>
                 </div>
@@ -26,8 +44,6 @@
                             </div>
                             <div class="layui-inline">
                                 <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索
-                                </button>
-                                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加
                                 </button>
                                 <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>导出
                                 </button>
@@ -56,6 +72,6 @@
 <!--导入自定义的一些公共方法-->
 <script th:src="@{/styles/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
 <script th:src="@{/styles/common/my_function.js}"></script>
-<script th:src="@{/styles/common/subsidiary/user/user_role.js}"></script>
+<script th:src="@{/styles/common/subsidiary/common/user/user_role.js}"></script>
 </body>
 </html>

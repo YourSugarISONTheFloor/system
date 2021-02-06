@@ -125,6 +125,8 @@ public class LoginController {
 			if (cookies != null && cookies.length > 0) {
 				for (Cookie cookie : cookies) {
 					if (cookie.getName().equals("token")) {
+						//从cookie中获取之前用户的token
+						System.out.println("token:" + cookie.getValue());
 						redisUtil.select(1);
 						redisUtil.del(cookie.getValue());
 						redisUtil.select(0);

@@ -39,7 +39,7 @@ public class ShiroKit {
 //		System.out.println("map:" + map);
 //		System.out.println(map.get("deptID").getClass().getName());
 //		System.out.println(Long.valueOf(map.get("deptID").toString()).getClass().getName());
-		shiroUser.setDeptId(Long.valueOf(map.get("deptID").toString()));
+		shiroUser.setDeptId(map.get("deptID") != null ? Long.valueOf(map.get("deptID").toString()) : null);
 		shiroUser.setDeptName(map.get("deptName") == null ? "" : map.get("deptName").toString());
 		shiroUser.setRoleList((List<Long>) map.get("roleList"));
 		shiroUser.setRoleNames((List<String>) map.get("roleNames"));

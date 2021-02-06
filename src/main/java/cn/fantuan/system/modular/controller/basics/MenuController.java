@@ -21,8 +21,8 @@ public class MenuController {
 	//初始化菜单接口
 	@GetMapping("")
 	@ResponseBody
-	public Map<String, Object> menu() {
-		return sysMenuService.menu();
+	public Map<String, Object> menu(Long id) {
+		return sysMenuService.menu(id);
 	}
 
 	//获取所有菜单
@@ -95,7 +95,7 @@ public class MenuController {
 		if (sysMenuById.getPid() != 0) {
 			String title = sysMenuService.getById(sysMenuById.getPid()).getTitle();
 			model.put("pTitle", title);
-		}else{
+		} else {
 			model.put("pTitle", "顶级菜单");
 		}
 		return "/subsidiary/table/menu/menu_edit";
@@ -104,7 +104,7 @@ public class MenuController {
 	//更改菜单
 	@PostMapping("/editMenu")
 	@ResponseBody
-	public Object editMenu(SysMenu sysMenu){
+	public Object editMenu(SysMenu sysMenu) {
 		return sysMenuService.editMenu(sysMenu);
 	}
 }

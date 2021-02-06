@@ -1,17 +1,20 @@
 package cn.fantuan.system.modular.service.impl;
 
+import cn.fantuan.system.core.common.constant.RedisConst;
 import cn.fantuan.system.modular.entities.CommonResult;
 import cn.fantuan.system.modular.entities.DataResult;
 import cn.fantuan.system.modular.entities.SysMenu;
 import cn.fantuan.system.modular.mapper.SysMenuServiceMapper;
+import cn.fantuan.system.modular.service.SysMenuService;
+import cn.fantuan.system.modular.util.RedisUtil;
 import cn.fantuan.system.modular.util.code.ErrorCode;
 import cn.fantuan.system.modular.util.code.SuccessCode;
-import cn.fantuan.system.modular.service.SysMenuService;
 import cn.fantuan.system.modular.util.menu.TreeUtil;
 import cn.fantuan.system.modular.vo.MenuVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,6 +24,9 @@ import java.util.Map;
 
 @Service
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuServiceMapper, SysMenu> implements SysMenuService {
+	@Autowired
+	private RedisUtil redisUtil;
+
 	public Map<String, Object> menuSys(QueryWrapper queryWrapper) {
 		//返回的菜单列表
 		Map<String, Object> map = new HashMap<>(16);
@@ -53,13 +59,20 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuServiceMapper, SysMen
 
 		map.put("homeInfo", home);
 		map.put("logoInfo", logo);
-		map.put("menuInfo", TreeUtil.toTree(menuInfo, 0L));
+		map.put("menuInfo", new TreeUtil().toTree(menuInfo, 0L));
+		//System.out.println(map);
 		return map;
 	}
 
 	@Override
-	public Map<String, Object> menu() {
-		return menuSys(new QueryWrapper<SysMenu>().eq("status", "1"));
+	public Map<String, Object> menu(Long id) {
+		//用户ID为1的为超级管理员
+		if (id == 1) {
+			return menuSys(new QueryWrapper<SysMenu>().eq("status", "1"));
+		}
+		Map<String, Object> hmget = redisUtil.hmget(RedisConst.role + id);
+		List roleList = (List) hmget.get("role_list");
+		return menuSys(new QueryWrapper<SysMenu>().eq("status", "1").in("id", roleList));
 	}
 
 	@Override

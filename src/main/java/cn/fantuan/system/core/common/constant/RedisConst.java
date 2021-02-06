@@ -6,4 +6,5 @@ package cn.fantuan.system.core.common.constant;
 public interface RedisConst {
 	//用户部门
 	String dept = "dept:";
+	String role = "role:";
 }

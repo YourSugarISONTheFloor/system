@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface SysMenuService extends IService<SysMenu> {
 	//初始化菜单接口
-	Map<String, Object> menu();
+	Map<String, Object> menu(Long id);
 
 	//获取所有菜单
 	Map<String, Object> menuAll();

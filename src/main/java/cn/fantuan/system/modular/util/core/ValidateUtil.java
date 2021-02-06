@@ -1,5 +1,7 @@
 package cn.fantuan.system.modular.util.core;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -74,4 +76,30 @@ public class ValidateUtil {
 		}
 		return true;
 	}
+
+	/**
+	 * 将对象转为map集合
+	 *
+	 * @param object
+	 * @return
+	 */
+	public static Map<String, Object> object2Map(Object object) {
+		Map<String, Object> result = new HashMap<>();
+		//获得类的的属性名 数组
+		Field[] fields = object.getClass().getDeclaredFields();
+		try {
+
+
+			for (Field field : fields) {
+				field.setAccessible(true);
+				String name = new String(field.getName());
+				result.put(name, field.get(object));
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 }

@@ -14,11 +14,9 @@ import lombok.NoArgsConstructor;
 public class Role {
 	//角色ID
 	@TableId(type = IdType.AUTO)
-	private Long role_id;
+	private Long roleId;
 	//角色名称
 	private String name;
 	//角色描述
 	private String remark;
-	//部门ID
-	private Long dep_id;
 }
