@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>签到打卡</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=no, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!--layui的css样式-->
+    <link rel="stylesheet" th:href="@{/styles/lib/layui-v2.5.5/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/styles/lib/font-awesome-4.7.0/css/font-awesome.min.css}" media="all">
+    <link rel="stylesheet" th:href="@{/styles/common/subsidiary/table/sign/sign.css}">
+    <!--layui的js文件-->
+    <script th:src="@{/styles/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
+    <script th:src="@{/styles/js/lay-config.js?v=1.0.4}" charset="utf-8"></script>
+    <!--导入自定义的一些公共方法-->
+    <script th:src="@{/styles/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
+    <script th:src="@{/styles/common/my_function.js}"></script>
+</head>
+<body>
+<div class="layui-container">
+    <div class="layui-row">
+        <div id="row-one">
+            <h2><b>上班签到打卡</b></h2>
+            <p>签到日：<span></span></p>
+            <p>签到时间段：<span></span></p>
+            <a type="button" class="layui-btn layui-btn-sm" href="javascript:;" layuimini-content-href="seat/Injury"
+               data-title="伤病请假" data-icon="fa fa-window-maximize">
+                临时请假
+            </a>
+        </div>
+    </div>
+    <div class="layui-row">
+        <div id="row-two" style="text-align: center">
+            距离签到结束还剩：<span></span>
+        </div>
+    </div>
+    <div class="layui-row">
+        <div id="row-three">
+            <div id="circle">
+                <div class="circle_in">
+                    <i class="fa fa-map-marker"></i>
+                    <p>立即签到</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>-->
+
+<!--高德地图的js文件-->
+<script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=1.4.15&key=63ca55e8c3818dceb649102790670fe2"></script>
+<script th:src="@{/styles/common/subsidiary/table/sign/sign.js}"></script>
+</body>
+</html>

@@ -74,6 +74,9 @@
         var msg = "[[${msg}]]";
         if (msg != "") {
             layer.msg(msg, {icon: 2, time: 3 * 1000, shift: 6});
+        } else if (sessionStorage.msg != null) {
+            layer.msg(sessionStorage.msg, {icon: 2, time: 3 * 1000, shift: 6});
+            sessionStorage.removeItem("msg");
         }
 
         // 登录过期的时候，跳出ifram框架

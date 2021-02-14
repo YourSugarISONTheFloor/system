@@ -40,7 +40,11 @@ public class UserController {
 	@Autowired
 	private RedisUtil redisUtil;
 
-	//初始化用户管理接口
+	/**
+	 * 初始化权限管理接口
+	 *
+	 * @return
+	 */
 	@GetMapping("role")
 	public String role() {
 		return PATH + "user_role";
@@ -145,5 +149,25 @@ public class UserController {
 	@ResponseBody
 	public CommonResult reset(Long id) {
 		return userServer.reset(id);
+	}
+
+	/**
+	 * 初始化部门管理接口
+	 *
+	 * @return
+	 */
+	@RequestMapping("dept")
+	public String dept() {
+		return null;
+	}
+
+	/**
+	 * 初始化角色管理接口
+	 *
+	 * @return
+	 */
+	@RequestMapping("part")
+	public String part() {
+		return null;
 	}
 }

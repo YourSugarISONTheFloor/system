@@ -5,17 +5,22 @@ import cn.fantuan.system.modular.entities.CommonResult;
 import cn.fantuan.system.modular.util.RedisUtil;
 import cn.fantuan.system.modular.util.code.SuccessCode;
 import cn.fantuan.system.modular.vo.MenuVo;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import lombok.SneakyThrows;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -267,4 +272,82 @@ class SystemApplicationTests {
 			e.printStackTrace();
 		}
 	}
+
+
+	@Test
+	public void add() {
+		//创建一个数组存储日期
+		String[] str = new String[7];
+		Date date = new Date();
+		SimpleDateFormat year_format = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar calendar;
+		//获取近七天的日期
+		for (int i = 0; i < 7; i++) {
+			calendar = Calendar.getInstance();
+			calendar.add(Calendar.DAY_OF_MONTH, -i);
+			//把时间插入到数组中，并倒叙插入
+			str[6 - i] = year_format.format(calendar.getTime());
+		}
+		System.out.println("数组长度：" + str.length);
+		for (int i = 0; i < str.length; i++) {
+			String day = str[i];
+			//获取签到的随机数
+			int activeUserDay = (int) (Math.random() * 67);
+			//获取缺勤的数量
+			int notAttendance = 66 - activeUserDay;
+			//获取迟到的随机数
+			int late = (int) (Math.random() * activeUserDay);
+			//获取早退的随机数
+			int exLeave = (int) (Math.random() * activeUserDay);
+			//获取请假的随机数
+			int leave = (int) (Math.random() * notAttendance);
+			//签到数
+			redisUtil.hset(RedisConst.activeUserDay, day, activeUserDay);
+			//迟到数
+			redisUtil.hset(RedisConst.late, day, late);
+			//缺勤数
+			redisUtil.hset(RedisConst.notAttendance, day, notAttendance);
+			//早退
+			redisUtil.hset(RedisConst.exLeave, day, exLeave);
+			//请假
+			redisUtil.hset(RedisConst.leave, day, leave);
+		}
+	}
+
+	@Test
+	public void getIp(HttpServletRequest request) {
+		String Xip = request.getHeader("X-Real-IP");
+		String XFor = request.getHeader("X-Forwarded-For");
+		if (StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)) {
+			//多次反向代理后会有多个ip值，第一个ip才是真实ip
+			int index = XFor.indexOf(",");
+			if (index != -1) {
+				XFor.substring(0, index);
+				System.out.println(XFor);
+			} else {
+				System.out.println(XFor);
+			}
+		}
+		XFor = Xip;
+		if (StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)) {
+			System.out.println(XFor);
+		}
+		if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+			XFor = request.getHeader("Proxy-Client-IP");
+		}
+		if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+			XFor = request.getHeader("WL-Proxy-Client-IP");
+		}
+		if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+			XFor = request.getHeader("HTTP_CLIENT_IP");
+		}
+		if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+			XFor = request.getHeader("HTTP_X_FORWARDED_FOR");
+		}
+		if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+			XFor = request.getRemoteAddr();
+		}
+		System.out.println(XFor);
+	}
+
 }

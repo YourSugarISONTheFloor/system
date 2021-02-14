@@ -19,8 +19,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuServiceMapper, SysMenu> implements SysMenuService {
@@ -68,21 +70,24 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuServiceMapper, SysMen
 	public Map<String, Object> menu(Long id) {
 		//用户ID为1的为超级管理员
 		if (id == 1) {
-			return menuSys(new QueryWrapper<SysMenu>().eq("status", "1"));
+			return menuSys(new QueryWrapper<SysMenu>().eq("status", "1").orderByAsc("pid", "sort"));
 		}
 		Map<String, Object> hmget = redisUtil.hmget(RedisConst.role + id);
-		List roleList = (List) hmget.get("role_list");
-		return menuSys(new QueryWrapper<SysMenu>().eq("status", "1").in("id", roleList));
+		//将List转为Set
+		Set roleList = new HashSet((List) hmget.get("role_list"));
+		//添加公共的菜单
+		roleList.add(200);
+		return menuSys(new QueryWrapper<SysMenu>().eq("status", "1").in("id", roleList).orderByAsc("pid", "sort"));
 	}
 
 	@Override
 	public Map<String, Object> menuAll() {
-		return menuSys(null);
+		return menuSys(new QueryWrapper<SysMenu>().orderByAsc("pid", "sort"));
 	}
 
 	@Override
 	public Object getMenu() {
-		List list = this.list();
+		List list = this.list(new QueryWrapper<SysMenu>().orderByAsc("pid", "sort"));
 		return new DataResult(0, "", list.size(), list);
 	}
 

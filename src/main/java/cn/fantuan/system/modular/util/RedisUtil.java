@@ -61,6 +61,16 @@ public class RedisUtil {
 	}
 
 	/**
+	 * 模糊查询keys
+	 *
+	 * @param key
+	 * @return
+	 */
+	public Set<String> getKeys(String key) {
+		return redisTemplate.keys(key + "*");
+	}
+
+	/**
 	 * 根据key 获取过期时间
 	 *
 	 * @param key 键 不能为null
