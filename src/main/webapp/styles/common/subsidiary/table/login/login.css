@@ -1,3 +1,7 @@
+Input {
+    BACKGROUND-COLOR: transparent;
+}
+
 .main-body {
     top: 50%;
     left: 50%;
@@ -82,7 +86,7 @@
 
 .login-main .login-top {
     height: 117px;
-    background-color: #148be4;
+    background-color: #86ccc1;
     border-radius: 12px 12px 0 0;
     font-family: SourceHanSansCN-Regular;
     font-size: 30px;
@@ -126,7 +130,7 @@
 
 .login-main .login-bottom {
     width: 428px;
-    background: #fff;
+    background: #ffffffdb;
     border-radius: 0 0 12px 12px;
     padding-bottom: 53px;
 }
@@ -148,7 +152,7 @@
 }
 
 body {
-    background: url(/styles/images/loginbg.png) 0% 0% / cover no-repeat;
+    background: url(/styles/images/back1.png) 100% 50% / cover no-repeat;
     position: static;
     font-size: 12px;
 }

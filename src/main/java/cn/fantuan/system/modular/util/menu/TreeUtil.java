@@ -1,14 +1,21 @@
 package cn.fantuan.system.modular.util.menu;
 
+import cn.fantuan.system.modular.service.DeptServer;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 数据库数据，转为父子关系包含的数据集合。列表封装工具类
  */
 public class TreeUtil<T> {
+	@Autowired
+	private DeptServer deptServer;
 
 	/**
 	 * @param treeList 传递的数据集合
@@ -88,5 +95,30 @@ public class TreeUtil<T> {
 			e.printStackTrace();
 		}
 		return parent;
+	}
+
+
+	/**
+	 * @param treeList 传递的数据集合
+	 * @return
+	 */
+	public List toDeptTree(List<T> treeList,Object msg) {
+		ArrayList retList = new ArrayList<>();
+		try {
+			for (T parent : treeList) {
+				Method getName = parent.getClass().getMethod("getName");
+				Map map = new HashMap();
+				map.put("name", getName.invoke(parent));
+				map.put("dept", msg);
+				retList.add(map);
+			}
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return retList;
 	}
 }

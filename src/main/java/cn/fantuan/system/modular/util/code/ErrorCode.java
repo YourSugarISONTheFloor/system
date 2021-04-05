@@ -1,6 +1,7 @@
 package cn.fantuan.system.modular.util.code;
 
 public enum ErrorCode {
+	ADD_ERROR(333,"操作失败"),
 	HAPPEN_ERROR(333, "出错啦！"),
 	NOT_HAS_MENU(333, "没有该父类菜单"),
 	//验证码异常

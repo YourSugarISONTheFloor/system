@@ -16,6 +16,14 @@
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <link rel="stylesheet" th:href="@{/styles/common/subsidiary/table/login/login.css}">
+    <style>
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+    </style>
 </head>
 <body>
 <div class="main-body">
@@ -58,7 +66,7 @@
     </div>
 </div>
 <div class="footer">
-    [[#{login.footer}]]<span class="padding-5">|</span><a target="_blank" href="http://www.miitbeian.gov.cn">[[#{login.number}]]</a>
+    [[#{login.footer}]]<span class="padding-5">|</span><a target="_blank">[[#{login.number}]]</a>
 </div>
 <script th:src="@{/styles/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
 <script th:src="@{/styles/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>

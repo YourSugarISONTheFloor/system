@@ -2,6 +2,8 @@ package cn.fantuan.system.modular.controller.index;
 
 import cn.fantuan.system.core.common.constant.RedisConst;
 import cn.fantuan.system.modular.entities.CommonResult;
+import cn.fantuan.system.modular.entities.outside.Dept;
+import cn.fantuan.system.modular.entities.outside.Role;
 import cn.fantuan.system.modular.entities.outside.User;
 import cn.fantuan.system.modular.page.LayuiPage;
 import cn.fantuan.system.modular.page.LayuiPageInfo;
@@ -158,7 +160,63 @@ public class UserController {
 	 */
 	@RequestMapping("dept")
 	public String dept() {
-		return null;
+		return PATH + "user_dept";
+	}
+
+	/**
+	 * 获取所有部门
+	 */
+	@RequestMapping("getAllDept")
+	@ResponseBody
+	public CommonResult getAllDept() {
+		CommonResult commonResult = deptServer.getINDept();
+		commonResult.setCode(0);
+		return commonResult;
+	}
+
+	/**
+	 * 获取父级部门
+	 */
+	@RequestMapping("commonTree")
+	public String commonTree() {
+		return "/subsidiary/table/user_dept/dept_tree";
+	}
+
+	/**
+	 * 添加部门视图
+	 *
+	 * @return
+	 */
+	@RequestMapping("dept_add")
+	public String dept_add() {
+		return "/subsidiary/table/user_dept/add";
+	}
+
+	/**
+	 * 部门下拉选择框数据
+	 */
+	@RequestMapping("dept_all")
+	@ResponseBody
+	public CommonResult dept_all(){
+		return deptServer.dept_all();
+	}
+
+	/**
+	 * 添加部门
+	 */
+	@PostMapping("addDept")
+	@ResponseBody
+	public CommonResult addDept(Dept dept) {
+		return deptServer.add(dept);
+	}
+
+	/**
+	 * 删除部门
+	 */
+	@PostMapping("deptDel")
+	@ResponseBody
+	public CommonResult deptDel(Long id) {
+		return deptServer.del(id);
 	}
 
 	/**
@@ -168,6 +226,47 @@ public class UserController {
 	 */
 	@RequestMapping("part")
 	public String part() {
-		return null;
+		return PATH + "user_part";
+	}
+
+	/**
+	 * 获取所有角色
+	 *
+	 * @return
+	 */
+	@RequestMapping("getAllPart")
+	@ResponseBody
+	public CommonResult getAllPart() {
+		CommonResult commonResult = roleServer.getRole();
+		commonResult.setCode(0);
+		return commonResult;
+	}
+
+	/**
+	 * 添加角色视图
+	 *
+	 * @return
+	 */
+	@RequestMapping("role_add")
+	public String role_add() {
+		return "/subsidiary/table/user_part/add";
+	}
+
+	/**
+	 * 添加角色
+	 */
+	@PostMapping("addPart")
+	@ResponseBody
+	public CommonResult addPart(Role role) {
+		return roleServer.add(role);
+	}
+
+	/**
+	 * 删除角色
+	 */
+	@PostMapping("partDel")
+	@ResponseBody
+	public CommonResult partDel(Long id) {
+		return roleServer.del(id);
 	}
 }

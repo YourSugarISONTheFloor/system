@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TimeZone;
 
 @Controller
 @RequestMapping("/seat/")
@@ -56,8 +58,18 @@ public class SignController {
 		String format = year.format(date);
 		float state = Float.parseFloat(Objects.equals(redisUtil.hget(RedisConst.report + format, id), null) ? "0" : String.valueOf(redisUtil.hget(RedisConst.report + format, id)));
 		Map map = new HashMap();
+		//获取当天20点的时间戳
+		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
+		calendar.set(Calendar.HOUR_OF_DAY, 20);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
 		map.put("state", state);
-		map.put("time", 1613390400000L);
+		map.put("day", format);
+		//结束时间戳
+		map.put("end", calendar.getTimeInMillis());
+		//开始时间戳
+		calendar.set(Calendar.HOUR_OF_DAY, 6);
+		map.put("start", calendar.getTimeInMillis());
 		return new CommonResult(SuccessCode.SUCCESS, map);
 	}
 

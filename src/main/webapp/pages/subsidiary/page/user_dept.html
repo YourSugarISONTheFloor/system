@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>部门管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/styles/lib/layui-v2.5.5/css/layui.css}" media="all">
+</head>
+<body>
+<table class="layui-hide" id="MyTable" lay-filter="MyTable"></table>
+<script type="text/html" id="tableBar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addRole">新增部门</button>
+    </div>
+</script>
+
+<script type="text/html" id="statusTpl">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script th:src="@{/styles/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
+<!--导入自定义的一些公共方法-->
+<script th:src="@{/styles/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
+<script th:src="@{/styles/common/my_function.js}"></script>
+<script th:src="@{/styles/common/subsidiary/common/user/user_dept.js}"></script>
+</body>
+</html>

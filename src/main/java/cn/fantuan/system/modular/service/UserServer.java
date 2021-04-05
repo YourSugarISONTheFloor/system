@@ -27,4 +27,6 @@ public interface UserServer extends IService<User> {
 
 	//重置密码
 	CommonResult reset(Long id);
+
+	Object getTree(String name, Integer tree);
 }

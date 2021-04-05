@@ -6,38 +6,70 @@ layui.use(['form', 'miniTab', 'util'], function () {
 
         miniTab.listen();
 
-        layer.load(0);
-        ajax_hasData("getTime", 'POST', {id: JSON.parse(localStorage.user).id}, function (rest) {
-            console.log(rest)
-            //开始时间
-            var serverTime = new Date().getTime();
+        function d() {
+            layer.load(0);
+            ajax_hasData("getTime", 'POST', {id: JSON.parse(localStorage.user).id}, function (rest) {
+                console.log(rest)
+                $("#day").html(rest.data.day);
+                $("#mu").html(MyMethod.getDateTimeInTime(rest.data.start) + " ~ " + MyMethod.getDateTimeInTime(rest.data.end));
 
-            //倒计时工具
-            util.countdown(rest.data.time, serverTime, function (date, serverTime, timer) {
-                var str = date[0] + '天' + date[1] + '时' + date[2] + '分' + date[3] + '秒';
-                layui.$('#row-two span').html(str);
-            });
+                //开始时间
+                var serverTime = new Date().getTime();
 
-            if (serverTime < rest.data.time) {
-                if (rest.data.state != 0) {
-                    $(".circle_in").css("color", "#d2d2d2");
-                    $(".circle_in p").html("已签到");
-                } else {
-                    //改变鼠标样式
-                    document.getElementById("circle").style.cursor = "pointer";
-                    //点击签到
-                    $("#circle").on('click', function () {
-                        clickBtn();
-                    })
+                function f() {
+                    if (serverTime < rest.data.start) {
+                        $('#row-two p').text("距离签到开始还剩：");
+                        //倒计时工具
+                        util.countdown(rest.data.start, serverTime, function (date, serverTime, timer) {
+                            var str = date[0] + '天' + date[1] + '时' + date[2] + '分' + date[3] + '秒';
+                            layui.$('#row-two span').html(str);
+                            if (serverTime >= rest.data.start) {
+                                f();
+                            }
+                        });
+                    } else {
+                        $('#row-two p').text("距离签到结束还剩：");
+                        //倒计时工具
+                        util.countdown(rest.data.end, serverTime, function (date, serverTime, timer) {
+                            var str = date[0] + '天' + date[1] + '时' + date[2] + '分' + date[3] + '秒';
+                            layui.$('#row-two span').html(str);
+                        });
+                    }
                 }
-            } else {
-                $(".circle_in").css("color", "#d2d2d2");
-                $(".circle_in p").html("签到已结束");
-            }
-            layer.closeAll()
-        });
+
+                f();
 
 
+                if (serverTime > rest.data.start) {
+                    if (serverTime < rest.data.end) {
+                        if (rest.data.state != 0) {
+                            //改变鼠标样式
+                            document.getElementById("circle").style.cursor = "default";
+                            $(".circle_in").css("color", "#d2d2d2");
+                            $(".circle_in p").html("已签到");
+                            //移除点击事件
+                            $("#circle").unbind('click')
+                        } else {
+                            //改变鼠标样式
+                            document.getElementById("circle").style.cursor = "pointer";
+                            //点击签到
+                            $("#circle").on('click', function () {
+                                clickBtn();
+                            })
+                        }
+                    } else {
+                        $(".circle_in").css("color", "#d2d2d2");
+                        $(".circle_in p").html("签到已结束");
+                    }
+                } else {
+                    $(".circle_in").css("color", "#d2d2d2");
+                    $(".circle_in p").html("签到还未开始");
+                }
+                layer.closeAll()
+            }, null, false);
+        }
+
+        d();
         //点击签到
         var clickBtn = function () {
             //点击签到-定位成功后的签到
@@ -65,6 +97,8 @@ layui.use(['form', 'miniTab', 'util'], function () {
                             yes: function (index, layero) {
                                 ajax_hasData("report", 'POST', {id: JSON.parse(localStorage.user).id}, function (rest) {
                                     layer.msg("签到成功", {icon: 1, time: 3 * 1000, shift: 6})
+                                    d()
+                                    layer.closeAll();
                                 }, null, false)
                             },
                             btn2: function (index, layero) {
@@ -78,6 +112,7 @@ layui.use(['form', 'miniTab', 'util'], function () {
                 }
             })
         }
+
 
         //定义地图
         var getMap = function () {

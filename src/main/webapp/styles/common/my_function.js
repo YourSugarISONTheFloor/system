@@ -117,5 +117,12 @@ var MyMethod = {
             + ' ' + (date.getHours() < 10 ? "0" + date.getHours() : date.getHours())
             + ':' + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes())
             + ':' + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds());
+    },
+    //毫秒级别的时间戳转为时间格式yyyy-MM-dd HH:mm:ss
+    getDateTimeInTime: function (a) {
+        var date = typeof a == "undefined" ? new Date() : typeof a == "number" ? new Date(a) : new Date(parseInt(a));
+        return (date.getHours() < 10 ? "0" + date.getHours() : date.getHours())
+            + ':' + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes())
+            + ':' + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds());
     }
 }

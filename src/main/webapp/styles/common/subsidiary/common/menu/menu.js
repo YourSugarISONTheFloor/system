@@ -63,6 +63,8 @@ layui.use(['table', 'form', 'treetable', 'layer'], function () {
             treePidName: 'pid',
             //是否默认折叠
             treeDefaultClose: false,
+            //父级展开时是否自动展开所有子级
+            treeLinkage: false,
             //绑定的表格id
             elem: Menu.tableId,
             url: Menu.url,

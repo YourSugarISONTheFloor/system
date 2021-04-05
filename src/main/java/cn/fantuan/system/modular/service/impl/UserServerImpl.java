@@ -2,16 +2,19 @@ package cn.fantuan.system.modular.service.impl;
 
 import cn.fantuan.system.core.common.constant.RedisConst;
 import cn.fantuan.system.modular.entities.CommonResult;
+import cn.fantuan.system.modular.entities.outside.Dept;
 import cn.fantuan.system.modular.entities.outside.User;
 import cn.fantuan.system.modular.mapper.UserMapper;
 import cn.fantuan.system.modular.page.LayuiPage;
 import cn.fantuan.system.modular.page.LayuiPageInfo;
+import cn.fantuan.system.modular.service.DeptServer;
 import cn.fantuan.system.modular.service.UserServer;
 import cn.fantuan.system.modular.util.RedisUtil;
 import cn.fantuan.system.modular.util.code.CheckCode;
 import cn.fantuan.system.modular.util.code.CodeUtil;
 import cn.fantuan.system.modular.util.code.ErrorCode;
 import cn.fantuan.system.modular.util.code.SuccessCode;
+import cn.fantuan.system.modular.util.menu.TreeUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -23,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +34,9 @@ import java.util.Map;
 public class UserServerImpl extends ServiceImpl<UserMapper, User> implements UserServer {
 	@Resource
 	private UserMapper userMapper;
+
+	@Autowired
+	private DeptServer deptServer;
 
 	@Autowired
 	private RedisUtil redisUtil;
@@ -165,5 +172,51 @@ public class UserServerImpl extends ServiceImpl<UserMapper, User> implements Use
 			return new CommonResult(SuccessCode.SUCCESS, true);
 		}
 		return new CommonResult(ErrorCode.HAPPEN_ERROR, false);
+	}
+
+	@Override
+	public Object getTree(String name, Integer tree) {
+		QueryWrapper queryWrapper = new QueryWrapper<User>();
+		if (CheckCode.checkEmail(name) == 1) {
+			queryWrapper.eq("email", name);
+		} else {
+			queryWrapper.eq("phone", name);
+		}
+		//获取当前用户信息
+		User one = this.getOne(queryWrapper);
+		//获取该用户的部门id
+		Integer deptId = one.getDeptId();
+		//获取处于该部门的用户
+		QueryWrapper query = new QueryWrapper<User>();
+		//设置对应的部门id
+		Long de = null;
+		List list = new ArrayList();
+		//1：下级、2：上级
+		if (tree == 1) {
+			//通过部门id获取详细
+			Dept pid = deptServer.getSon(deptId);
+			if (pid != null) {
+				//获取该部门的上级部门id
+				de = pid.getDeptId();
+				query.eq("deptId", de);
+				list = this.list(query);
+			}
+		} else {
+			//通过部门id获取详细
+			Dept pid = deptServer.getPid(deptId);
+			if (pid != null) {
+				//获取该部门的上级部门id
+				de = pid.getPid();
+				query.eq("deptId", de);
+				list = this.list(query);
+			}
+		}
+
+		System.out.println(list);
+		Map map = new HashMap();
+		map.put("name", one.getName());
+		map.put("dept", deptServer.getPid(one.getDeptId()).getDeptName());
+		map.put("children", new TreeUtil().toDeptTree(list, deptServer.getPid(Integer.valueOf(de.toString())).getDeptName()));
+		return map;
 	}
 }
